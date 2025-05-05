@@ -46,10 +46,16 @@ _Estimated time: 5 Min._
 
 Start the application in `app` and understand how modules are wired.
 
+
 === Exercise 1: Auto-Configure A GreetingService Bean
 _Estimated time:  ~10 Min._
 
 Make the default `StdOutGreetingService` in `{stdout}` available as auto-configured Spring bean for Spring Boot applications that rely on `GreetingService`.
+
+==== Learnings
+- **How does Spring Boot find auto-configuration classes**
+- **How does Spring Boot provide auto-configured beans**
+- **How to allow auto-configured beans to be overwritten**
 
 ==== Task
 - Create a auto-configuration class `com.workshop.magic.config.GreetingAutoConfiguration` in the `{auto-config}` module.
@@ -114,7 +120,6 @@ NOTE: Auto-configurations must be loaded only by being named in the imports file
 - Start the application and verify your assumption
 ====
 
-
 ==== Conclusion
 Think for a moment, when is this useful and where does Spring Boot use this concept?
 
@@ -125,7 +130,6 @@ Spring Boot's auto-configuration simplifies application development by automatic
 
 For example, adding `spring-boot-starter-data-jpa` and a dependency to the `h2` database driver sets up a `DataSource` for an in-memory database without manual configuration.
 ====
-
 
 ==== Solution
 [source,bash]
@@ -139,6 +143,9 @@ git checkout -f exercise-2
 === Exercise 2: Custom Starter With Default GreetingService
 You will now package the ``{auto-config}`´ and `{stdout}` modules into a reusable Spring Boot starter.
 
+==== Learnings
+- **How do spring-boot-starters work**
+
 ==== Task:
 - Use the module `{starter}`
 - Add dependencies to `{auto-config}` and `{stdout}`
@@ -146,6 +153,9 @@ You will now package the ``{auto-config}`´ and `{stdout}` modules into a reusab
 
 ✅ Confirm that the app still works as expected and prints the greeting.
 
+==== Detailed Steps
+
+==== Conclusion
 🤔 Why create a starter? When is it useful in teams or public libraries?
 
 .Collapsible Answer
@@ -158,17 +168,16 @@ You will now package the ``{auto-config}`´ and `{stdout}` modules into a reusab
 
 🥳 Awesome, let’s move on to the next exercise
 
-=== Exercise 3: Custom Starter Without Default GreetingService
+==== Solution
+🥳 Terrific, let’s move on to the next exercise
 
-
-🥳 Wicked, let’s move on to the next exercise
-
-=== Exercise 4: Make The Greeting Configurable
+=== Exercise 3: Make The Greeting Configurable
 _Estimated time: ~10 Min._
 
 You want to allow applications to configure the `GreetingService` without implementing it.
 
-🥳 Terrific, let’s move on to the next exercise
+==== Learnings
+- **How to parametrize auto-configured beans**
 
 ==== Task
 - Find the `GreetingProperties` in the `{auto-config}` module.
@@ -185,7 +194,6 @@ You want to allow applications to configure the `GreetingService` without implem
 
 ✅ Run the application and see how the service is greeting now.
 
-
 ==== Conclusion
 When does this become handy?
 
@@ -194,7 +202,6 @@ When does this become handy?
 ====
 It allows configuring beans provided through auto-configuration and change their behaviour without the need to change the bean declaration itself.
 ====
-
 
 ==== Detailed Steps
 
@@ -218,7 +225,6 @@ It allows configuring beans provided through auto-configuration and change their
 ✅ Run the application and see how the service is greeting now.
 ====
 
-
 ==== Solution
 [source,bash]
 ....
@@ -226,8 +232,11 @@ git checkout exercise-3
 ....
 
 
-=== Exercise 5: GreetingService Conditional On Property
+=== Exercise 4: GreetingService Conditional On Property
 _Estimated Time: ~10Min._
+
+==== Learnings
+- **How to make auto-configured beans depending on properties**
 
 ==== Task
 - Provide an alternative `GreetingService` implementation `LoggerGreetingService` that uses a logging framework.
@@ -297,7 +306,26 @@ _Estimated Time: ~10Min._
 ✅ Run the application - why does it start?
 ====
 
-=== Step 4: Using Custom Conditions
+
+=== Exercise 5: Custom Starter Without Default GreetingService
+
+=== Learnings
+- **How to make auto-configured beans depending on classpath**
+
+🥳 Wicked, let’s move on to the next exercise
+
+
+=== Exercise 6: Using Custom Conditions
+
+==== Learning
+- **How to read the condition eva,utaion report**
+
+=== Exercise 7: Using Custom Conditions
+
+==== Learning
+- **How to make autoconfigured beans depending on custom conditions**
+
+
 It is also possible to provide custom conditions as equivalent to existing `@On...` conditions.
 Let's create a custom condition that  checks a property `my.custom.condition`. Just because it's simple. But imagine you have a more sophisticated custom check here. (e.g. infrastructure checks)
 https://docs.spring.io/spring-boot/reference/actuator/endpoints.html#actuator.endpoints.kubernetes-probes[see kubernetes-probes]
