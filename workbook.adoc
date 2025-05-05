@@ -1,0 +1,377 @@
+= Demystifying Spring Boot’s Auto-Configuration Magic
+:app:  app
+:api: library-api
+:auto-config: library-autoconfigure
+:stdout: library-stdout
+:slf4j: library-slf4j
+:starter: library-spring-boot-starter
+:author: Fabian Krüger
+:author: Moritz Halbritter
+:docdate: 025-04-21
+:doctype: article
+:toc:
+
+Workshop SpringIO 2025 - Moritz Halbritter & Fabian Krüger
+
+== Questions / Clarify
+- [ ] Exercise for starters?
+- [ ] Question: Given Phils comment in `ConditionalOnClass`, isn't `@ConditionalOnClass` with `GreetingService` problematic
+- [ ] Should we have an exercise to understand the `@ConditionalOnClass` in our auto-config
+- [ ] No `@AutoConfiguration` annotation required in Exercise 3
+
+== Getting Started
+- Checkout the workshop project from GitHub
+
+[source,bash]
+....
+cd ~
+git clone https://github.com/fabapp2/spring-boot-magic-workshop.git
+cd spring-boot-magic-workshop
+....
+
+== Project Layout
+The project has these modules following the https://www.appcontinuum.io/[app continuum layout].
+
+- `{app}` - The **Spring Boot application**
+- `{auto-config}` - **Spring Boot Auto-configuration** for the `library`
+- `{api}` - **Spring Boot independant** library with `GreetingService` interface
+- `{stdout}` - **Spring Boot independant** library implementation logging to stdout
+- `{slf4j}` - **Spring Boot independant** library implementation logging with slf4j
+- `{starter}` - The spring-boot-starter module
+
+== Changes
+
+=== debug and properties-migrator
+Bring in dependencies and explain debug putout
+
+In 2.5 !
+
+[source,xml]
+.....
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-configuration-processor</artifactId>
+    <optional>true</optional>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-properties-migrator</artifactId>
+    <scope>runtime</scope>
+</dependency>
+.....
+
+[source,xml]
+.....
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <configuration>
+        <annotationProcessorPaths>
+            <path>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-configuration-processor</artifactId>
+            </path>
+        </annotationProcessorPaths>
+    </configuration>
+</plugin>
+.....
+
+== Exercises
+
+=== Prerequisite
+_Estimated time: 5 Min._
+
+Start the application in `app` and understand how modules are wired.
+
+=== Exercise 1: Auto-Configure A GreetingService Bean
+_Estimated time:  ~10 Min._
+
+Make the default `StdOutGreetingService` in `{stdout}` available as auto-configured Spring bean for Spring Boot applications that rely on `GreetingService`.
+
+==== Task
+- Create a auto-configuration class `com.workshop.magic.config.GreetingAutoConfiguration` in the `{auto-config}` module.
+
+- This auto-configuration provides `StdOutGreetingService` as a Spring bean of type `GreetingService`.
+
+- Auto-configuration classes must be declared in a file `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` with their fully qualified name and Spring Boot will create the listed auto-configurations.
+
+- Add a dependency to `org.springframework.boot:spring-boot-autoconfigure` which  brings the `@AutoConfiguration` annotation
+
+- Annotate `GreetingAutoConfiguration` with `@AutoConfiguration`.
+
+🤔 Starting the application should fail - why?
+
+- To avoid conflicts and allow custom implementations, the `StdOutGreetingService` should only be created when no other bean of type `GreetingService` exists.
+This can be achieved by annotating the bean declaration with `@ConditionalOnMissingBean` telling Boot to back off when such a bean already exists.
+
+✅ Starting the applicaton should now print: _MyGreetingService: Hola SpringIO Barcelona_
+
+- Modify the application to use the `StdOutGreetingService` now.
+
+✅ Starting the applicaton should now print: _StdOutGreetingService: Hola SpringIO Barcelona_
+
+NOTE: Auto-configurations must be loaded only by being named in the imports file. Make sure that they are defined in a specific package space and that they are never the target of component scanning. Furthermore, auto-configuration classes should not enable component scanning to find additional components. Specific @Import annotations should be used instead.
+
+==== Detailed Steps
+
+.Detailed Steps
+[%collapsible]
+====
+
+- Create a new Class `com.workshop.magic.config.GreetingAutoConfiguration` in the `{auto-config}` module.
+
+- Create a new file `src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` in the `{auto-config}` module. (https://docs.spring.io/spring-boot/reference/features/developing-auto-configuration.html#features.developing-auto-configuration.locating-auto-configuration-candidates[see docs])
+
+- Add the fully qualified classname of the `GreetingAutoConfiguration´ class to the `.imports` file
+
+- Add the dependency to `com.workshop:library-stdout`.
+
+- Create a new `GreetingService` bean in `GreetingAutoConfiguration` that returns a new instance of `StdOutGreetingService` and initializes it with _"Hola"_ as greeting.
+
+- Add the dependency to `org.springframework.boot:spring-boot-autoconfigure` to `{auto-config}`
+
+- The `GreetingAutoConfiguration` must be annotated with `@AutoConfiguration`.
+
+❌ Starting the application should fail - why?
+
+- Start the application and verify your assumption
+
+- Use the `@ConditionalOnMissingBean` annotation on the `GreetingService` bean method in `GreetingAutoConfiguration` to only load the bean when no other bean of type `GreetingService` exists. (https://docs.spring.io/spring-boot/reference/features/developing-auto-configuration.html#features.developing-auto-configuration.condition-annotations.bean-conditions[see docs])
+
+- Add the dependency to `com.workshop:auto-config` to `app`
+
+✅ What will happen when the application starts?
+
+- Start the application and verify your assumption
+
+- Now, remove the `MyGreetingService` class, or comment out/remove the `@Service` annotation on `MyGreetingService`.
+
+✅ What will happen when the application starts?
+
+- Start the application and verify your assumption
+====
+
+
+==== Conclusion
+Think for a moment, when is this useful and where does Spring Boot use this concept?
+
+.Answer
+[%collapsible]
+====
+Spring Boot's auto-configuration simplifies application development by automatically configuring components based on the dependencies present on the classpath. This feature reduces the need for manual setup, allowing developers to focus on business logic rather than boilerplate code.
+
+For example, adding `spring-boot-starter-data-jpa` and a dependency to the `h2` database driver sets up a `DataSource` for an in-memory database without manual configuration.
+====
+
+
+==== Solution
+[source,bash]
+....
+git checkout -f exercise-2
+....
+
+🥳 Great, let's move on to the next exercise
+
+
+=== Exercise 2: Custom Starter With Default GreetingService
+You will now package the ``{auto-config}`´ and `{stdout}` modules into a reusable Spring Boot starter.
+
+==== Task:
+- Use the module `{starter}`
+- Add dependencies to `{auto-config}` and `{stdout}`
+- Replace direct dependencies in the `{app}` module with the new starter
+
+✅ Confirm that the app still works as expected and prints the greeting.
+
+🤔 Why create a starter? When is it useful in teams or public libraries?
+
+.Collapsible Answer
+[%collapsible]
+====
+- Clean separation of concerns
+- Reusability for teams or public Maven users
+- Simplifies integration (just add one dependency)
+====
+
+🥳 Awesome, let’s move on to the next exercise
+
+=== Exercise 3: Custom Starter Without Default GreetingService
+
+
+🥳 Wicked, let’s move on to the next exercise
+
+=== Exercise 4: Make The Greeting Configurable
+_Estimated time: ~10 Min._
+
+You want to allow applications to configure the `GreetingService` without implementing it.
+
+🥳 Terrific, let’s move on to the next exercise
+
+==== Task
+- Find the `GreetingProperties` in the `{auto-config}` module.
+
+- Annotate the GreetingProperties with `@ConfigurationProperties(prefix = "workshop.greeting")`
+
+- Annotate the `GreetingAutoConfiguration` with `@EnableConfigurationProperties(GreetingProperties.class)`
+
+- Use the property as constructor argument for the  `StdOutGreetingService`.
+
+✅ Run the application and see how the service is greeting now.
+
+- Define the `workshop.greeting.text` property and set it to "Gude!" or any greeting you prefer.
+
+✅ Run the application and see how the service is greeting now.
+
+
+==== Conclusion
+When does this become handy?
+
+.Answer
+[%collapsible]
+====
+It allows configuring beans provided through auto-configuration and change their behaviour without the need to change the bean declaration itself.
+====
+
+
+==== Detailed Steps
+
+.Detailed Steps
+[%collapsible]
+====
+- Find the `GreetingProperties` in the `{auto-config}` module.
+
+- Annotate the `GreetingProperties` with `@ConfigurationProperties(prefix = "workshop.greeting")`
+
+- Annotate the `GreetingAutoConfiguration` with `@EnableConfigurationProperties(GreetingProperties.class)`
+
+- Provide `GreetingProperties` as parameter to the bean declaration of `StdOutGreetingService`
+
+- Provide the property as constructor argument for the  `StdOutGreetingService`.
+
+✅ Run the application and see how the service is greeting now.
+
+- Define the `workshop.greeting.text` property and set it to "Gude!" or any greeting you prefer.
+
+✅ Run the application and see how the service is greeting now.
+====
+
+
+==== Solution
+[source,bash]
+....
+git checkout exercise-3
+....
+
+
+=== Exercise 5: GreetingService Conditional On Property
+_Estimated Time: ~10Min._
+
+==== Task
+- Provide an alternative `GreetingService` implementation `LoggerGreetingService` that uses a logging framework.
+
+- Declare a new bean for this new service that lives in `library-slf4j`.
+
+- Add a dependency to `com.workshop:library-slf4j` in the `{auto-config}` module.
+
+- Use the `@ConditionalOnProperty` annotation to the new bean to allow the application to decide which service bean should be used by setting a property `workshop.greeting.type`.
+
+✅ Run the application - why does fail?
+
+- Fix the issue.
+
+- Now the application should be able to use `workshop.greeting.type=logger` or `workshop.greeting.type=stdout` to decide which service to use.
+
+- Remove the property
+
+✅ Run the application - why does it start?
+
+- define a property `workshop.greeting.type`
+
+
+✅ Run the application - why does fail?
+
+- If no property is given it should be written to stdout.
+
+
+==== Conclusion
+
+
+==== Detailed Steps
+
+.Detailed Steps
+[%collapsible]
+====
+- Provide an alternative `GreetingService` implementation `LoggerGreetingService` that uses a logging framework.
+
+- Add a dependency to `com.workshop:library-slf4j` in `{auto-config}`.
+
+- Declare a new bean for `LoggerGreetingService` in `GreetingAutoConfiguration`.
+
+- Add a dependency to `org.slf4j:slf4j-simple` in the `library-slf4j` module.
+
+- Use the `@ConditionalOnProperty(name="workshop.greeting.type")` annotation to the new bean to allow the application to decide which service bean should be used by setting the property.
+
+✅ Run the application - why does it start?
+
+- define a property `workshop.greeting.type`
+
+✅ Run the application - why does fail?
+
+- To fix the issue add `@ConditionalOnProperty(name="workshop.greeting.type", havingValue="stdout")` to the `StdOutGreetingService` bean and add the attribute `havingValue = "logger"` to the `LoggerGreetingService` bean.
+
+✅ Run the application - why does it start?
+
+- Now the application should be able to use `workshop.greeting.type=logger` or `workshop.greeting.type=stdout` to decide which service to use.
+
+- Remove the property
+
+✅ Run the application - why does fail?
+
+- If no property is given it should be written to stdout.
+
+- Add the attribute `havingValue = "stdout"` to `StdOutGreetingService` bean.
+
+✅ Run the application - why does it start?
+====
+
+=== Step 4: Using Custom Conditions
+It is also possible to provide custom conditions as equivalent to existing `@On...` conditions.
+Let's create a custom condition that  checks a property `my.custom.condition`. Just because it's simple. But imagine you have a more sophisticated custom check here. (e.g. infrastructure checks)
+https://docs.spring.io/spring-boot/reference/actuator/endpoints.html#actuator.endpoints.kubernetes-probes[see kubernetes-probes]
+https://docs.spring.io/spring-boot/how-to/deployment/cloud.html#howto.deployment.cloud.kubernetes[cloud.kubernetes]
+--> System Property (!!!)+
+File, Date... ?
+
+==== Task
+Create a new annotation `@ConditionalOnCustomCondition`.
+It must have target of type and method and a retention of runtime.
+Also, add `@Conditional({OnCustomCondition.class})` to the annotation.
+Create the `OnCustomCondition` which must extend from `@SpringCondition`.
+Override the `getMatchOutcome`  method and use `ConditionOutcome.match(..)` and `noMatch(..)` respectively.
+When your custom condition is true, a `BeepingGreetingService` should be used.
+
+=== Step 5: Testing The Auto-Configuration
+TODO
+
+=== Step X: Build config
+--> optional = true
+
+
+=== Step 6: Order CUSTOM Auto-Configuration Beans
+TODO
+
+=== Step 7: Depend On Order of EXISTING Auto-Configuration Beans
+TODO
+
+--> ObjectMapper
+
+- [ ] Moritz guggt mal nach einem gescheiten Beispiel
+- [ ] Alternativ: Hinweis und keine Übung
+
+== Resources
+
+=== Related Talk
+https://2025.springio.net/sessions/demystifying-spring-boot-magic/
+
+==== Reference
+- https://docs.spring.io/spring-boot/reference/using/auto-configuration.html[Spring Boot Auto-configuration]
