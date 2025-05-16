@@ -39,43 +39,6 @@ The project has these modules following the https://www.appcontinuum.io/[app con
 - `{slf4j}` - **Spring Boot independant** library implementation logging with slf4j
 - `{starter}` - The spring-boot-starter module
 
-== Changes
-
-=== debug and properties-migrator
-Bring in dependencies and explain debug putout
-
-In 2.5 !
-
-[source,xml]
-.....
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-configuration-processor</artifactId>
-    <optional>true</optional>
-</dependency>
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-properties-migrator</artifactId>
-    <scope>runtime</scope>
-</dependency>
-.....
-
-[source,xml]
-.....
-<plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-compiler-plugin</artifactId>
-    <configuration>
-        <annotationProcessorPaths>
-            <path>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-configuration-processor</artifactId>
-            </path>
-        </annotationProcessorPaths>
-    </configuration>
-</plugin>
-.....
-
 == Exercises
 
 === Prerequisite
