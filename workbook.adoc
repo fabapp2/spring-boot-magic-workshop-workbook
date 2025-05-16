@@ -350,8 +350,146 @@ Create the `OnCustomCondition` which must extend from `@SpringCondition`.
 Override the `getMatchOutcome`  method and use `ConditionOutcome.match(..)` and `noMatch(..)` respectively.
 When your custom condition is true, a `BeepingGreetingService` should be used.
 
-=== Step 5: Testing The Auto-Configuration
-TODO
+[[testing]]
+=== Step X: Testing The Auto-Configuration
+_Estimated time:  ~TODO-MH Min._
+
+Create unit tests to ensure that the `GreetingAutoConfiguration` works as expected.
+
+==== Task
+
+- A test class `GreetingAutoConfigurationTest` for the `GreetingAutoConfiguration` class must be created.
+
+- A dependency on `org.springframework.boot:spring-boot-starter-test` has to be added in the `auto-config` module.
+
+- Spring Boot's `ApplicationContextRunner` should be used to test the auto-configuration.
+
+- AssertJ assertions should be used to verify that the context contains a `StdOutGreetingService` bean if no property is set.
+
+- The test should assert that the context contains a `StdOutGreetingService` bean if the property `workshop.greeting.type` is set to `stdout`.
+
+- The test should assert that the context contains a `LoggerGreetingService` bean if the property `workshop.greeting.type` is set to `logger`.
+
+- The test should assert that user-defined beans take precedence over the auto-configured `GreetingService` beans — essentially testing that `@ConditionalOnMissingBean` works.
+
+==== Conclusion
+
+What value has a unit test for an auto-configuration?
+
+.Answer
+[%collapsible]
+====
+Auto-configurations can contain a lot of conditions, sometimes even custom ones. As this auto-configuration is part of your codebase,
+you should also unit-test it to ensure that it behaves as designed, same as the rest of your code.
+Spring Boot's `ApplicationContextRunner` makes this easy.
+====
+
+
+==== Detailed Steps
+
+.Detailed Steps
+[%collapsible]
+====
+
+- Create a class named `GreetingAutoConfigurationTest` in `auto-config/src/test/java` in the package `com.workshop.magic.config`.
+
+- Create a field of type `ApplicationContextRunner`, and use the fluent API to call `withConfiguration` with `AutoConfigurations.of(GreetingAutoConfiguration.class)`.
+
+- Write a test case named `shouldProvideStdOutGreetingServiceByDefault` which uses the `run` method of the `ApplicationContextRunner` field.
+
+- Inside the lambda block of the `run` method, use AssertJ's `assertThat` on the context to call `hasSingleBean` with an `StdOutGreetingService.class` argument.
+
+- Write a test case named `shouldProvideStdOutGreetingServiceWhenPropertyIsSet` which uses the `withPropertyValues` of the `ApplicationContextRunner` field to set the property `workshop.greeting.type` to `stdout`.
+
+- Inside the lambda block of the `run` method, use AssertJ's `assertThat` on the context to call `hasSingleBean` with an `StdOutGreetingService.class` argument.
+
+- Write a test case named `shouldProvideLoggerGreetingServiceWhenPropertyIsSet` which uses the `withPropertyValues` of the `ApplicationContextRunner` field to set the property `workshop.greeting.type` to `logger`.
+
+- Inside the lambda block of the `run` method, use AssertJ's `assertThat` on the context to call `hasSingleBean` with an `LoggerGreetingService.class` argument.
+
+- Write a test case named `shouldBackOffIfGreetingServiceIsDefinedByUser` which uses the `withBean` method of the `ApplicationContextRunner` field to define a bean of type `GreetingService`.
+
+- Inside the lambda block of the `run` method, use AssertJ's `assertThat` on the context to call `hasSingleBean` with an `GreetingService.class` argument.
+
+====
+
+==== Solution
+[source,bash]
+....
+git checkout TODO-MH
+....
+
+
+[[properties-metadata]]
+=== Step X: Adding properties metadata
+_Estimated time:  ~TODO-MH Min._
+
+Use the Spring Boot configuration processor to generate metadata for your configuration properties.
+
+==== Task
+
+- Add the `org.springframework.boot:spring-boot-configuration-processor` to your project
+
+- Run a build
+
+- Inspect the file `components/library-autoconfigure/target/classes/META-INF/spring-configuration-metadata.json`
+
+🤔 Think about why that file could be useful
+
+- The `text` field in `GreetingProperties`  should be renamed to `greeting`, while deprecating the `text` field. Use `@Deprecated` and `@DeprecatedConfigurationProperty` annotations to achieve this
+
+- Run a build
+
+- Inspect the file `spring-configuration-metadata.json` again
+
+🤔 What has changed? Why could that be useful?
+
+🤔 Open the `application.properties` in your IDE. Do you notice something?
+
+- Add `org.springframework.boot:spring-boot-properties-migrator` to your app
+
+- Start the app and observe the console output
+
+==== Conclusion
+
+What values is provided by that metadata file? Who could use it?
+
+.Answer
+[%collapsible]
+====
+This metadata file is read by IDEs to provide auto-completion for properties.
+Additionally, deprecations and their replacement are also recorded in that file, which is also used by IDEs to guide users.
+And the `spring-boot-properties-migrator` also uses this file to display deprecations on startup and to provide the automatic mapping from the old property to the new one.
+====
+
+
+==== Detailed Steps
+
+.Detailed Steps
+[%collapsible]
+====
+
+- Add `org.springframework.boot:spring-boot-configuration-processor` to `components/library-autoconfigure/pom.xml`, with `optional = true`.
+- Configure the `maven-compiler-plugin` to include `org.springframework.boot:spring-boot-configuration-processor` as an annotation processor.
+You can take a look at https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.4.5&packaging=jar&jvmVersion=24&groupId=com.example&artifactId=demo&name=demo&description=Demo%20project%20for%20Spring%20Boot&packageName=com.example.demo&dependencies=configuration-processor[the POM file generated by start.spring.io] for an example.
+- Run `./mvnw compile` and inspect `components/library-autoconfigure/target/classes/META-INF/spring-configuration-metadata.json`.
+- Replace `private String text;` in the `GreetingProperties` class with `private String greeting`.
+- Annotate the `public String getText()` method with `@Deprecated`.
+- Annotate the `public String getText()` method with `@DeprecatedConfigurationProperty(replacement = "workshop.greeting.greeting")`.
+- Return `this.greeting` from the `getText()` method.
+- Assign `this.greeting` in the `setText()` method.
+- Add a new getter and setter method for `private String greeting`.
+- Run `./mvnw compile` and inspect `components/library-autoconfigure/target/classes/META-INF/spring-configuration-metadata.json`.
+- Add `org.springframework.boot:spring-boot-properties-migrator` with `scope = runtime` to `app/app/pom.xml`.
+- Run `./mvnw spring-boot:run`
+
+====
+
+==== Solution
+[source,bash]
+....
+git checkout TODO-MH
+....
 
 === Step X: Build config
 --> optional = true
