@@ -41,7 +41,7 @@ _Estimated time: 5 Min._
 Start the application in `app` and understand how modules are wired.
 
 
-=== Exercise 1: Auto-Configure A GreetingService Bean
+=== Exercise 1: Auto Configured Bean
 _Estimated time:  ~10 Min._
 
 Make the default `StdOutGreetingService` in `{stdout}` available as auto-configured Spring bean for Spring Boot applications that rely on `GreetingService`.
@@ -143,7 +143,7 @@ git checkout -f exercise-2
 🥳 Great, let's move on to the next exercise
 
 
-=== Exercise 2: Custom Starter With Default GreetingService
+=== Exercise 2: Custom Spring Boot Starter
 You will now package the `{auto-config}´ and `{stdout}` modules into a reusable Spring Boot starter.
 
 ==== Learnings
