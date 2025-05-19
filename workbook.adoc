@@ -161,7 +161,7 @@ You will now package the `{auto-config}´ and `{stdout}` modules into a reusable
 ==== Conclusion
 🤔 Why create a starter? When is it useful in teams or public libraries?
 
-.Collapsible Answer
+.Answer
 [%collapsible]
 ====
 - Clean separation of concerns
@@ -179,11 +179,22 @@ git checkout -f exercise-3
 
 🥳 Awesome, let’s move on to the next exercise
 
+=== Exercise 3: Custom Starter Without Default GreetingService
 
-=== Exercise 3: GreetingService Conditional On Property
+==== Learnings
+- **How to make auto-configured beans depending on classpath**
+
+🥳 Wicked, let’s move on to the next exercise
+
+
+=== Exercise 4: Conditions Evaluation Report
+
+
+=== Exercise 5: Property Configuration and @ConditionalOnProperty
 _Estimated Time: ~10Min._
 
 ==== Learnings
+- **How to parametrize auto-configured beans**
 - **How to make auto-configured beans depending on properties**
 
 ==== Task
@@ -211,6 +222,22 @@ _Estimated Time: ~10Min._
 ✅ Run the application - why does fail?
 
 - If no property is given it should be written to stdout.
+
+
+- Find the `GreetingProperties` in the `{auto-config}` module.
+
+- Annotate the `GreetingAutoConfiguration` with `@EnableConfigurationProperties(GreetingProperties.class)`
+
+- Annotate the GreetingProperties with `@ConfigurationProperties(prefix = "workshop.greeting")`
+
+
+- Use the property as constructor argument for the  `StdOutGreetingService`.
+
+✅ Run the application and see how the service is greeting now.
+
+- Define the `workshop.greeting.text` property and set it to "Gude!" or any greeting you prefer.
+
+✅ Run the application and see how the service is greeting now.
 
 
 ==== Conclusion
@@ -252,50 +279,8 @@ _Estimated Time: ~10Min._
 - Add the attribute `havingValue = "stdout"` to `StdOutGreetingService` bean.
 
 ✅ Run the application - why does it start?
-====
 
 
-=== Exercise 4: Conditions Evaluation Report
-
-
-=== Exercise 5: Make The Greeting Configurable
-_Estimated time: ~10 Min._
-
-You want to allow applications to configure the `GreetingService` without implementing it.
-
-==== Learnings
-- **How to parametrize auto-configured beans**
-
-==== Task
-- Find the `GreetingProperties` in the `{auto-config}` module.
-
-- Annotate the `GreetingAutoConfiguration` with `@EnableConfigurationProperties(GreetingProperties.class)`
-
-- Annotate the GreetingProperties with `@ConfigurationProperties(prefix = "workshop.greeting")`
-
-
-- Use the property as constructor argument for the  `StdOutGreetingService`.
-
-✅ Run the application and see how the service is greeting now.
-
-- Define the `workshop.greeting.text` property and set it to "Gude!" or any greeting you prefer.
-
-✅ Run the application and see how the service is greeting now.
-
-==== Conclusion
-When does this become handy?
-
-.Answer
-[%collapsible]
-====
-It allows configuring beans provided through auto-configuration and change their behaviour without the need to change the bean declaration itself.
-====
-
-==== Detailed Steps
-
-.Detailed Steps
-[%collapsible]
-====
 - Find the `GreetingProperties` in the `{auto-config}` module.
 
 - Annotate the `GreetingAutoConfiguration` with `@EnableConfigurationProperties(GreetingProperties.class)`
@@ -313,6 +298,14 @@ It allows configuring beans provided through auto-configuration and change their
 ✅ Run the application and see how the service is greeting now.
 ====
 
+
+.Answer
+[%collapsible]
+====
+It allows configuring beans provided through auto-configuration and change their behaviour without the need to change the bean declaration itself.
+====
+
+
 ==== Solution
 [source,bash]
 ....
@@ -322,20 +315,7 @@ git checkout exercise-4
 🥳 Terrific, let’s move on to the next exercise
 
 
-=== Exercise 5: Custom Starter Without Default GreetingService
-
-==== Learnings
-- **How to make auto-configured beans depending on classpath**
-
-🥳 Wicked, let’s move on to the next exercise
-
-
-=== Exercise 6: Using Custom Conditions
-
-==== Learning
-- **How to read the condition eva,utaion report**
-
-=== Exercise 7: Using Custom Conditions
+=== Exercise 6: Custom Conditions
 
 ==== Learning
 - **How to make autoconfigured beans depending on custom conditions**
@@ -356,8 +336,9 @@ Create the `OnCustomCondition` which must extend from `@SpringCondition`.
 Override the `getMatchOutcome`  method and use `ConditionOutcome.match(..)` and `noMatch(..)` respectively.
 When your custom condition is true, a `BeepingGreetingService` should be used.
 
+
 [[testing]]
-=== Step X: Testing The Auto-Configuration
+=== Step 7: Testing The Auto-Configuration
 _Estimated time:  ~TODO-MH Min._
 
 Create unit tests to ensure that the `GreetingAutoConfiguration` works as expected.
@@ -427,7 +408,7 @@ git checkout TODO-MH
 
 
 [[properties-metadata]]
-=== Step X: Adding properties metadata
+=== Step 8: Adding properties metadata
 _Estimated time:  ~TODO-MH Min._
 
 Use the Spring Boot configuration processor to generate metadata for your configuration properties.
@@ -491,21 +472,6 @@ You can take a look at https://start.spring.io/#!type=maven-project&language=jav
 ....
 git checkout TODO-MH
 ....
-
-=== Step X: Build config
---> optional = true
-
-
-=== Step 6: Order CUSTOM Auto-Configuration Beans
-TODO
-
-=== Step 7: Depend On Order of EXISTING Auto-Configuration Beans
-TODO
-
---> ObjectMapper
-
-- [ ] Moritz guggt mal nach einem gescheiten Beispiel
-- [ ] Alternativ: Hinweis und keine Übung
 
 == Resources
 
