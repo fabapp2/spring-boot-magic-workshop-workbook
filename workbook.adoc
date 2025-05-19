@@ -704,5 +704,7 @@ git checkout -f main
 === Related Talk
 https://2025.springio.net/sessions/demystifying-spring-boot-magic/[Demystifying Spring Boot Magic by Patrick Baumgartner]
 
-==== Reference
-- https://docs.spring.io/spring-boot/reference/using/auto-configuration.html[Spring Boot Auto-configuration]
+=== Literature
+- https://docs.spring.io/spring-boot/reference/using/auto-configuration.html[Auto-configuration]
+- https://docs.spring.io/spring-boot/reference/features/developing-auto-configuration.html#page-title[Creating Your Own Auto-configuration]
+- https://docs.spring.io/spring-boot/specification/configuration-metadata/annotation-processor.html[Generating Your Own Metadata by Using the Annotation Processor]
