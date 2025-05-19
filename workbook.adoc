@@ -140,7 +140,7 @@ For example, adding `spring-boot-starter-data-jpa` and a dependency to the `h2` 
 git checkout -f exercise-2
 ....
 
-🥳 Great, let's move on to the next exercise
+🥳 Fantastic, let’s move on to the next exercise
 
 
 === Exercise 2: Custom Spring Boot Starter
@@ -309,7 +309,7 @@ It allows configuring beans provided through auto-configuration and change their
 git checkout exercise-4
 ....
 
-🥳 Terrific, let’s move on to the next exercise
+🥳 Superb, let’s move on to the next exercise
 
 
 === Exercise 6: Custom Conditions
@@ -333,9 +333,11 @@ Create the `OnCustomCondition` which must extend from `@SpringCondition`.
 Override the `getMatchOutcome`  method and use `ConditionOutcome.match(..)` and `noMatch(..)` respectively.
 When your custom condition is true, a `BeepingGreetingService` should be used.
 
+🥳 Phenomenal, let’s move on to the next exercise
+
 
 [[testing]]
-=== Step 7: Testing The Auto-Configuration
+=== Exercise 7: Testing The Auto-Configuration
 _Estimated time:  ~TODO-MH Min._
 
 Create unit tests to ensure that the `GreetingAutoConfiguration` works as expected.
@@ -403,9 +405,11 @@ Spring Boot's `ApplicationContextRunner` makes this easy.
 git checkout TODO-MH
 ....
 
+🥳 Brilliant, let’s move on to the next exercise
+
 
 [[properties-metadata]]
-=== Step 8: Adding properties metadata
+=== Exercise 8: Adding properties metadata
 _Estimated time:  ~TODO-MH Min._
 
 Use the Spring Boot configuration processor to generate metadata for your configuration properties.
