@@ -475,26 +475,83 @@ git checkout exercise-4
 🥳 Superb, let’s move on to the next exercise
 
 
-=== Exercise 6: Custom Conditions
+=== Exercise 6: Using Custom Conditions
+_Estimated time:  ~TODO Min._
 
-==== Learning
-- **How to make autoconfigured beans depending on custom conditions**
+It is also possible to create custom conditions as equivalent to existing `@On...` conditions.
+Let's create a custom condition that checks the system property `my.custom.condition` - just because it's simple.
+But imagine you have a more sophisticated custom check here, e.g., infrastructure checks like the https://docs.spring.io/spring-boot/reference/actuator/endpoints.html#actuator.endpoints.kubernetes-probes[Kubernetes probes].
+Or you could write a condition which triggers only on 1st of April.
+Oh, the possibilities!
 
-
-It is also possible to provide custom conditions as equivalent to existing `@On...` conditions.
-Let's create a custom condition that  checks a property `my.custom.condition`. Just because it's simple. But imagine you have a more sophisticated custom check here. (e.g. infrastructure checks)
-https://docs.spring.io/spring-boot/reference/actuator/endpoints.html#actuator.endpoints.kubernetes-probes[see kubernetes-probes]
-https://docs.spring.io/spring-boot/how-to/deployment/cloud.html#howto.deployment.cloud.kubernetes[cloud.kubernetes]
---> System Property (!!!)+
-File, Date... ?
+==== Learnings
+- **How to create your own conditions**
+- **How to use that custom condition**
 
 ==== Task
-Create a new annotation `@ConditionalOnCustomCondition`.
-It must have target of type and method and a retention of runtime.
-Also, add `@Conditional({OnCustomCondition.class})` to the annotation.
-Create the `OnCustomCondition` which must extend from `@SpringCondition`.
-Override the `getMatchOutcome`  method and use `ConditionOutcome.match(..)` and `noMatch(..)` respectively.
-When your custom condition is true, a `BeepingGreetingService` should be used.
+
+* Create a new annotation `@MyCustomCondition`. It must have a `@Target` of `TYPE` and `METHOD` and a `@Retention` of `RUNTIME` (you can also copy that from Spring Boot's `@ConditionalOnProperty`).
+
+* The newly created annotation must be annotated with `@Conditional({OnCustomCondition.class})`.
+
+* A new class, `OnCustomCondition` must be created. It should extend Spring Boot's `SpringBootCondition`.
+
+* The `getMatchOutcome` method must be overriden and should check the `my.custom.condition` system property. Use `ConditionOutcome.match` and `ConditionOutcome.noMatch` to signal if the condition matches or not.
+
+* Modify the `GreetingAutoConfiguration` to use the new `@MyCustomCondition`. A bean of class `BeepGreetingService` should be created if `@MyCustomCondition` matches.
+
+* Test that the application works by setting the system property `my.custom.condition` and verify that the `BeepGreetingService` bean is used.
+
+NOTE: You'll have to set `workshop.greeting.type` to something else than `logger` or `stdout`, because otherwise the `LoggerGreetingService` or `StdOutGreetingService` is also created.
+
+🤔 Also take a look at the conditions evaluation report. Do you see your condition in there?
+
+==== Detailed Steps
+
+.Detailed Steps
+[%collapsible]
+====
+
+* Create a new annotation in the `{auto-config}` module, called `MyCustomCondition`
+
+* Annotate the annotation with `@Target({ElementType.TYPE, ElementType.METHOD})` and with `@Retention(RetentionPolicy.RUNTIME)`
+
+* Annotate the annotation with `@Conditional({OnCustomCondition.class})`
+
+* Create a class called `OnCustomCondition` and let it extend `SpringBootCondition`
+
+* Implement the `getMatchOutcome` method
+** Use `System.getProperty("my.custom.condition")` to read the `my.custom.condition` system property
+** If the value of that property is `true`, return `ConditionOutcome.match` to signal that the condition matches
+** Otherwise, return `ConditionOutcome.noMatch` to signal that the condition didn't match
+
+* Add a new `@Bean` method to the `GreetingAutoConfiguration` class, call it `beepGreetingService`, the return type is `GreetingService`
+** Annotate this new method with `@MyCustomCondition`, `@ConditionalOnMissingBean` and `@ConditionalOnClass(BeepGreetingService.class)`
+** Return a new instance of `BeepGreetingService` from that method
+
+* To test the custom condition, you can add `System.setProperty("my.custom.condition", "true");` as first line in the `main` method, or you can set the system properties when starting with your IDE
+
+* You'll also need to add `workshop.greeting.type=none` to your `application.properties`, because otherwise the `LoggerGreetingService` or the `StdOutGreetingService` would be created
+====
+
+==== Conclusion
+Can you image why it is useful to create custom conditions?
+
+.Answer
+[%collapsible]
+====
+Creating your own conditions is useful if the conditions from Spring Framework and Spring Boot don't fit your needs.
+Custom conditions show the power of an extensible framework like the Spring Framework.
+There's no "magic" behind the built-in Spring Boot conditions — they are built on the same foundations like your custom condition is.
+
+NOTE: You can take a look at the `@Profile` annotation from Spring Framework: The logic is implemented in `ProfileCondition`, and it essentially returns `true` if the profile is activated and `false` if not.
+====
+
+==== Solution
+[source,bash]
+....
+git checkout -f exercise-7
+....
 
 🥳 Phenomenal, let’s move on to the next exercise
 
