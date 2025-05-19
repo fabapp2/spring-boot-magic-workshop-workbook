@@ -314,7 +314,7 @@ _Estimated Time: ~10Min._
 
 === Exercise 5: Custom Starter Without Default GreetingService
 
-=== Learnings
+==== Learnings
 - **How to make auto-configured beans depending on classpath**
 
 🥳 Wicked, let’s move on to the next exercise
