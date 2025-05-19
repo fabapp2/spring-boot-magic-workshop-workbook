@@ -235,6 +235,7 @@ It allows configuring beans provided through auto-configuration and change their
 git checkout exercise-4
 ....
 
+🥳 Terrific, let’s move on to the next exercise
 
 === Exercise 4: GreetingService Conditional On Property
 _Estimated Time: ~10Min._
