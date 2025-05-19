@@ -11,7 +11,7 @@
 :doctype: article
 :toc:
 
-Workshop Spring I/O 2025 - Moritz Halbritter & Fabian Krüger
+Workshop SpringIO 2025 - Moritz Halbritter & Fabian Krüger
 
 == Getting Started
 - Checkout the workshop project from GitHub
@@ -569,7 +569,7 @@ Create unit tests to ensure that the `GreetingAutoConfiguration` works as expect
 
 - The test should assert that the context contains a `LoggerGreetingService` bean if the property `workshop.greeting.type` is set to `logger`.
 
-- Test test should assert that the context contains `BeepGreetingService` bean if the system property `my.custom.condition` is set to `true`.
+- The test should assert that the context contains `BeepGreetingService` bean if the system property `my.custom.condition` is set to `true`.
 
 - The test should assert that user-defined beans take precedence over the auto-configured `GreetingService` beans — essentially testing that `@ConditionalOnMissingBean` works.
 
