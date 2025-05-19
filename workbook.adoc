@@ -185,9 +185,10 @@ You want to allow applications to configure the `GreetingService` without implem
 ==== Task
 - Find the `GreetingProperties` in the `{auto-config}` module.
 
+- Annotate the `GreetingAutoConfiguration` with `@EnableConfigurationProperties(GreetingProperties.class)`
+
 - Annotate the GreetingProperties with `@ConfigurationProperties(prefix = "workshop.greeting")`
 
-- Annotate the `GreetingAutoConfiguration` with `@EnableConfigurationProperties(GreetingProperties.class)`
 
 - Use the property as constructor argument for the  `StdOutGreetingService`.
 
@@ -213,9 +214,9 @@ It allows configuring beans provided through auto-configuration and change their
 ====
 - Find the `GreetingProperties` in the `{auto-config}` module.
 
-- Annotate the `GreetingProperties` with `@ConfigurationProperties(prefix = "workshop.greeting")`
-
 - Annotate the `GreetingAutoConfiguration` with `@EnableConfigurationProperties(GreetingProperties.class)`
+
+- Annotate the `GreetingProperties` with `@ConfigurationProperties(prefix = "workshop.greeting")`
 
 - Provide `GreetingProperties` as parameter to the bean declaration of `StdOutGreetingService`
 
