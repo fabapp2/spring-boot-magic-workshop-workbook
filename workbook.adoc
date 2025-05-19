@@ -359,46 +359,59 @@ _Estimated Time: ~10Min._
 - **How to make auto-configured beans depending on properties**
 
 ==== Task
-- Make the alternative `GreetingService` implementation `LoggerGreetingService` available as auto-configured bean. This implementation uses a logging framework.
+. Make the alternative `GreetingService` implementation `LoggerGreetingService` available as auto-configured bean. This implementation uses a logging framework.
 
-- Declare a new bean for this new service that lives in `library-slf4j`.
+. Declare a new bean for this new service that lives in `library-slf4j`.
 
-- Add a dependency to `com.workshop:library-slf4j` in the `{auto-config}` module.
+. Add a dependency to `com.workshop:library-slf4j` in the `{auto-config}` module.
 
-- Use the `@ConditionalOnProperty` annotation to the new bean to allow the application to decide which service bean should be used by setting a property `workshop.greeting.type`.
+. Use the `@ConditionalOnProperty` annotation to the new bean to allow the application to decide which service bean should be used by setting a property `workshop.greeting.type`.
 
-✅ Run the application - why does fail?
+. ✅ Run the application . why does fail?
 
-- Fix the issue.
+. Fix the issue.
 
-- Now the application should be able to use `workshop.greeting.type=logger` or `workshop.greeting.type=stdout` to decide which service to use.
+. Now the application should be able to use `workshop.greeting.type=logger` or `workshop.greeting.type=stdout` to decide which service to use.
 
-- Remove the property
+. Remove the property
 
-✅ Run the application - why does it start?
+. ✅ Run the application . why does it start?
 
-- define a property `workshop.greeting.type`
-
-
-✅ Run the application - why does fail?
-
-- If no property is given it should be written to stdout.
+. define a property `workshop.greeting.type`
 
 
-- Find the `GreetingProperties` in the `{auto-config}` module.
+. ✅ Run the application . why does fail? +
 
-- Annotate the `GreetingAutoConfiguration` with `@EnableConfigurationProperties(GreetingProperties.class)`
-
-- Annotate the GreetingProperties with `@ConfigurationProperties(prefix = "workshop.greeting")`
+. If no property is given it should be written to stdout.
 
 
-- Use the property as constructor argument for the  `StdOutGreetingService`.
+. Find the `GreetingProperties` in the `{auto-config}` module.
 
-✅ Run the application and see how the service is greeting now.
+. Annotate the `GreetingAutoConfiguration` with `@EnableConfigurationProperties(GreetingProperties.class)` (This annotation ensures Spring Boot binds the values from `application.properties` into the `GreetingProperties` class. Without it, the injection will fail at runtime.)
 
-- Define the `workshop.greeting.text` property and set it to "Gude!" or any greeting you prefer.
+. Annotate the GreetingProperties with `@ConfigurationProperties(prefix = "workshop.greeting")`
 
-✅ Run the application and see how the service is greeting now.
+
+. Use the property as constructor argument for the  `StdOutGreetingService`.
+
+. Also pass `GreetingProperties` into both `GreetingService` bean methods:
+
+    [source,java]
+    ----
+    GreetingService stdOutGreetingService(GreetingProperties properties) {
+        return new StdOutGreetingService(properties.getText());
+    }
+
+    GreetingService slf4jGreetingService(GreetingProperties properties) {
+        return new LoggerGreetingService(properties.getText());
+    }
+    ----
+
+. ✅ Run the application and see how the service is greeting now.
+
+. Define the `workshop.greeting.text` property and set it to "Gude!" or any greeting you prefer.
+
+. ✅ Run the application and see how the service is greeting now.
 
 
 ==== Conclusion
@@ -409,54 +422,59 @@ _Estimated Time: ~10Min._
 .Detailed Steps
 [%collapsible]
 ====
-- Provide an alternative `GreetingService` implementation `LoggerGreetingService` that uses a logging framework.
+. Provide an alternative `GreetingService` implementation `LoggerGreetingService` that uses a logging framework.
 
-- Add a dependency to `com.workshop:library-slf4j` in `{auto-config}`.
+. Add a dependency to `com.workshop:library-slf4j` in `{auto-config}`.
 
-- Declare a new bean for `LoggerGreetingService` in `GreetingAutoConfiguration`.
+. Declare a new bean for `LoggerGreetingService` in `GreetingAutoConfiguration`.
 
-- Add a dependency to `org.slf4j:slf4j-simple` in the `library-slf4j` module.
+. Add a dependency to `org.slf4j:slf4j-simple` in the `library-slf4j` module.
 
-- Use the `@ConditionalOnProperty(name="workshop.greeting.type")` annotation to the new bean to allow the application to decide which service bean should be used by setting the property.
+. Use the `@ConditionalOnProperty(name="workshop.greeting.type")` annotation to the new bean to allow the application to decide which service bean should be used by setting the property.
 
-✅ Run the application - why does it start?
+. ✅ Run the application . why does it start?
 
-- define a property `workshop.greeting.type`
+. define a property `workshop.greeting.type`
 
-✅ Run the application - why does fail?
+. ✅ Run the application . why does fail?
 
-- To fix the issue add `@ConditionalOnProperty(name="workshop.greeting.type", havingValue="stdout")` to the `StdOutGreetingService` bean and add the attribute `havingValue = "logger"` to the `LoggerGreetingService` bean.
+. To fix the issue add `@ConditionalOnProperty(name="workshop.greeting.type", havingValue="stdout")` to the `StdOutGreetingService` bean and add the attribute `havingValue = "logger"` to the `LoggerGreetingService` bean.
 
-✅ Run the application - why does it start?
+. ✅ Run the application . why does it start?
 
-- Now the application should be able to use `workshop.greeting.type=logger` or `workshop.greeting.type=stdout` to decide which service to use.
+. Now the application should be able to use `workshop.greeting.type=logger` or `workshop.greeting.type=stdout` to decide which service to use.
 
-- Remove the property
+. Remove the property
 
-✅ Run the application - why does fail?
-
-- If no property is given it should be written to stdout.
-
-- Add the attribute `havingValue = "stdout"` to `StdOutGreetingService` bean.
-
-✅ Run the application - why does it start?
+. ✅ Run the application . why does fail?
++
+NOTE: The `LoggerGreetingService` will only be created if the `library-slf4j` module is present on the classpath.
 
 
-- Find the `GreetingProperties` in the `{auto-config}` module.
+. If no property is given it should be written to stdout.
 
-- Annotate the `GreetingAutoConfiguration` with `@EnableConfigurationProperties(GreetingProperties.class)`
+. Add the attribute `havingValue = "stdout"` to `StdOutGreetingService` bean.
 
-- Annotate the `GreetingProperties` with `@ConfigurationProperties(prefix = "workshop.greeting")`
+. ✅ Run the application . why does it start?
 
-- Provide `GreetingProperties` as parameter to the bean declaration of `StdOutGreetingService`
 
-- Provide the property as constructor argument for the  `StdOutGreetingService`.
+. Find the `GreetingProperties` in the `{auto-config}` module.
 
-✅ Run the application and see how the service is greeting now.
+. Annotate the `GreetingAutoConfiguration` with `@EnableConfigurationProperties(GreetingProperties.class)`
 
-- Define the `workshop.greeting.text` property and set it to "Gude!" or any greeting you prefer.
+. Annotate the `GreetingProperties` with `@ConfigurationProperties(prefix = "workshop.greeting")`
 
-✅ Run the application and see how the service is greeting now.
+. Provide `GreetingProperties` as parameter to the bean declaration of `StdOutGreetingService`
+
+. Provide the property as constructor argument for the  `StdOutGreetingService`.
+
+. ✅ Run the application and see how the service is greeting now.
++
+TIP: Try changing `workshop.greeting.type=stdout` or removing it entirely to observe how Spring Boot picks the fallback implementation (`StdOutGreetingService`).
+
+. Define the `workshop.greeting.text` property and set it to "Gude!" or any greeting you prefer.
+
+. ✅ Run the application and see how the service is greeting now.
 ====
 
 
