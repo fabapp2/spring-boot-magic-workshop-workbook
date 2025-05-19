@@ -227,7 +227,7 @@ This pattern mimics common practices in Spring Boot where auto-configured beans 
         return new LoggerGreetingService();
     }
 
-. In the existing stdOutGreetingService() method, add:
+. In the existing `stdOutGreetingService()` method, add:
 
     @ConditionalOnMissingClass("com.workshop.magic.service.slf4j.LoggerGreetingService")
 
@@ -372,13 +372,14 @@ _Estimated Time: ~10Min._
     - `workshop.greeting.text`
     - `workshop.greeting.type`
 . Start the application and observe which implementation is used.
+. ✅ You should see: LoggerGreetingService: Gude SpringIO Barcelona
 . Remove or change the `workshop.greeting.type` property and observe the fallback behavior.
 
 
 ==== Conclusion
 
 In this exercise, you learned how to make auto-configured beans dynamic using external properties.
-This makes it easy for end users to configure application behavior without touching Java code.
+This allows developers to adapt behavior using simple property values, without needing custom profiles or bean overrides.
 
 Using `@ConditionalOnProperty`, you can activate specific beans based on the application's configuration, enabling powerful runtime flexibility.
 
@@ -387,7 +388,7 @@ Using `@ConditionalOnProperty`, you can activate specific beans based on the app
 .Answer
 [%collapsible]
 ====
-It allows configuring beans provided through auto-configuration and change their behavior without the need to change the bean declaration itself.
+It allows configuring beans provided through auto-configuration and changing their behavior without the need to change the bean declaration itself.
 This enables teams to toggle functionality through properties, and provides sensible defaults with the ability to override them.
 ====
 
@@ -451,6 +452,8 @@ workshop.greeting.text=Gude!
 . ✅ You should see: _LoggerGreetingService: Gude SpringIO Barcelona_
 
 . Remove the `workshop.greeting.type` line and restart the app.
++
+TIP: If you don't see the logger-based output, double-check that `library-slf4j` is included in the app module and that the property `type=logger` is set.
 
 . ✅ You should now see: _StdOutGreetingService: Gude SpringIO Barcelona_
 
@@ -460,7 +463,7 @@ TIP: The `LoggerGreetingService` bean will only be created if `library-slf4j` is
 ==== Solution
 [source,bash]
 ....
-git checkout exercise-4
+git checkout -f exercise-6
 ....
 
 🥳 Superb, let’s move on to the next exercise
