@@ -7,7 +7,7 @@
 :starter: library-spring-boot-starter
 :author: Fabian Krüger
 :author: Moritz Halbritter
-:docdate: 025-04-21
+:docdate: 2025-04-21
 :doctype: article
 :toc:
 
@@ -44,7 +44,7 @@ Start the application in `app` and understand how modules are wired.
 === Exercise 1: Auto Configured Bean
 _Estimated time:  ~10 Min._
 
-Make the default `StdOutGreetingService` in `{stdout}` available as auto-configured Spring bean for Spring Boot applications that rely on `GreetingService`.
+Make the default `StdOutGreetingService` in `{stdout}` available as an auto-configured Spring bean for Spring Boot applications that rely on `GreetingService`.
 
 ==== Learnings
 - **How does Spring Boot find auto-configuration classes**
@@ -52,9 +52,9 @@ Make the default `StdOutGreetingService` in `{stdout}` available as auto-configu
 - **How to allow auto-configured beans to be overwritten**
 
 ==== Task
-. Create a auto-configuration class `com.workshop.magic.config.GreetingAutoConfiguration` in the `{auto-config}` module.
+. Create an auto-configuration class `com.workshop.magic.config.GreetingAutoConfiguration` in the `{auto-config}` module.
 
-. Add a dependency to `org.springframework.boot:spring-boot-autoconfigure` which  brings the `@AutoConfiguration` annotation
+. Add a dependency to `org.springframework.boot:spring-boot-autoconfigure` which brings the `@AutoConfiguration` annotation
 
 . Add a dependency to other required modules. Make them optional which is a best-practice for auto-configurations.
 
@@ -71,13 +71,13 @@ Make the default `StdOutGreetingService` in `{stdout}` available as auto-configu
 . 🤔 Starting the application should fail . why?
 
 . To avoid conflicts and allow custom implementations, the `StdOutGreetingService` should only be created when no other bean of type `GreetingService` exists.
-This can be achieved by annotating the bean declaration with `@ConditionalOnMissingBean` telling Boot to back off when such a bean already exists.
+This can be achieved by annotating the bean declaration with `@ConditionalOnMissingBean`, which tells Spring Boot to back off when such a bean already exists.
 
-. ✅ Starting the applicaton should now print: _MyGreetingService: Hola SpringIO Barcelona_
+. ✅ Starting the application should now print: _MyGreetingService: Hola SpringIO Barcelona_
 
 . Modify the application to use the `StdOutGreetingService` now.
 
-. ✅ Starting the applicaton should now print: _StdOutGreetingService: Hola SpringIO Barcelona_
+. ✅ Starting the application should now print: _StdOutGreetingService: Hola SpringIO Barcelona_
 
 NOTE: Auto-configurations must be loaded only by being named in the imports file. Make sure that they are defined in a specific package space and that they are never the target of component scanning. Furthermore, auto-configuration classes should not enable component scanning to find additional components. Specific @Import annotations should be used instead.
 
@@ -91,7 +91,7 @@ NOTE: Auto-configurations must be loaded only by being named in the imports file
 
 . Create a new file `src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` in the `{auto-config}` module. (https://docs.spring.io/spring-boot/reference/features/developing-auto-configuration.html#features.developing-auto-configuration.locating-auto-configuration-candidates[see docs])
 
-. Add the fully qualified classname of the `GreetingAutoConfiguration´ class to the `.imports` file
+. Add the fully qualified classname of the `GreetingAutoConfiguration` class to the `.imports` file
 
 . Add the dependency to `com.workshop:library-stdout`.
 
@@ -144,7 +144,7 @@ git checkout -f exercise-2
 
 
 === Exercise 2: Custom Spring Boot Starter
-You will now package the `{auto-config}´ and `{stdout}` modules into a reusable Spring Boot starter.
+You will now package the `{auto-config}` and `{stdout}` modules into a reusable Spring Boot starter.
 
 ==== Learnings
 - **How do spring-boot-starters work**
@@ -181,7 +181,7 @@ git checkout -f exercise-3
 ==== Learnings
 - **How to make auto-configured beans depending on classpath**
 
-🥳 Wicked, let’s move on to the next exercise
+🥳 Awesome, let’s move on to the next exercise
 
 
 === Exercise 4: Conditions Evaluation Report
