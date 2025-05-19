@@ -1,0 +1,33 @@
+// tag::main[]
+You will now package the `{auto-config}` and `{stdout}` modules into a reusable Spring Boot starter.
+
+==== Learnings
+- **How do spring-boot-starters work**
+
+==== Task:
+. Use the module `{starter}`
+. Add dependencies to `{auto-config}` and `{stdout}`
+. Replace direct dependencies in the `{app}` module with the new starter
+. ✅ Confirm that the app still works as expected and prints the greeting.
+
+==== Conclusion
+🤔 Why create a starter? When is it useful in teams or public libraries?
+
+.Answer
+[%collapsible]
+====
+- Clean separation of concerns
+- Reusability for teams or public Maven users
+- Simplifies integration (just add one dependency)
+====
+
+
+
+==== Solution
+[source,bash]
+....
+git checkout -f exercise-3
+....
+
+🥳 Awesome, let's move on to the next exercise
+// end::main[]

@@ -1,0 +1,11 @@
+// tag::main[]
+- Checkout the workshop project from GitHub
+
+[source,bash]
+....
+cd ~
+git clone https://github.com/fabapp2/spring-boot-magic-workshop.git
+cd spring-boot-magic-workshop
+git checkout exercise-1
+....
+// end::main[]

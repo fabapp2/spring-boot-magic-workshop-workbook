@@ -1,0 +1,10 @@
+// tag::main[]
+The project has these modules following the https://www.appcontinuum.io/[app continuum layout].
+
+- `{app}` - The **Spring Boot application**
+- `{auto-config}` - **Spring Boot Auto-configuration** for the `library`
+- `{api}` - **Spring Boot independent** library with `GreetingService` interface
+- `{stdout}` - **Spring Boot independent** library implementation logging to stdout
+- `{slf4j}` - **Spring Boot independent** library implementation logging with SLF4J
+- `{starter}` - A **Spring Boot starter** to make the auto-configuration and all dependencies easily available
+// end::main[]

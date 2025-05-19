@@ -1,0 +1,71 @@
+// tag::main[]
+_Estimated time:  ~TODO-MH Min._
+
+Create unit tests to ensure that the `GreetingAutoConfiguration` works as expected.
+
+==== Task
+
+- A test class for the `GreetingAutoConfiguration` class must be created.
+
+- A dependency on `org.springframework.boot:spring-boot-starter-test` has to be added in the `auto-config` module.
+
+- Spring Boot's `ApplicationContextRunner` should be used to test the auto-configuration.
+
+- AssertJ assertions should be used to verify that the context contains a `StdOutGreetingService` bean if no property is set.
+
+- The test should assert that the context contains a `StdOutGreetingService` bean if the property `workshop.greeting.type` is set to `stdout`.
+
+- The test should assert that the context contains a `LoggerGreetingService` bean if the property `workshop.greeting.type` is set to `logger`.
+
+- The test should assert that the context contains `BeepGreetingService` bean if the system property `my.custom.condition` is set to `true`.
+
+- The test should assert that user-defined beans take precedence over the auto-configured `GreetingService` beans — essentially testing that `@ConditionalOnMissingBean` works.
+
+==== Conclusion
+
+What value has a unit test for an auto-configuration?
+
+.Answer
+[%collapsible]
+====
+Auto-configurations can contain a lot of conditions, sometimes even custom ones. As this auto-configuration is part of your codebase,
+you should also unit-test it to ensure that it behaves as designed, same as the rest of your code.
+Spring Boot's `ApplicationContextRunner` makes this easy.
+====
+
+
+==== Detailed Steps
+
+.Detailed Steps
+[%collapsible]
+====
+* Create a class named `GreetingAutoConfigurationTest` in `auto-config/src/test/java` in the package `com.workshop.magic.config`.
+
+* Create a field of type `ApplicationContextRunner`, and use the fluent API to call `withConfiguration` with `AutoConfigurations.of(GreetingAutoConfiguration.class)`.
+
+* Write a test case named `shouldProvideStdOutGreetingServiceByDefault` which uses the `run` method of the `ApplicationContextRunner` field.
+** Inside the lambda block of the `run` method, use AssertJ's `assertThat` on the context to call `hasSingleBean` with an `StdOutGreetingService.class` argument.
+
+* Write a test case named `shouldProvideStdOutGreetingServiceWhenPropertyIsSet` which uses the `withPropertyValues` of the `ApplicationContextRunner` field to set the property `workshop.greeting.type` to `stdout`.
+** Inside the lambda block of the `run` method, use AssertJ's `assertThat` on the context to call `hasSingleBean` with an `StdOutGreetingService.class` argument.
+
+* Write a test case named `shouldProvideLoggerGreetingServiceWhenPropertyIsSet` which uses the `withPropertyValues` of the `ApplicationContextRunner` field to set the property `workshop.greeting.type` to `logger`.
+** Inside the lambda block of the `run` method, use AssertJ's `assertThat` on the context to call `hasSingleBean` with an `LoggerGreetingService.class` argument.
+
+* Write a test case named `shouldProvideBeepGreetingServiceIfSystemPropertyIsSet` which uses `withPropertyValues` of the `ApplicationContextRunner` field to set the property `workshop.greeting.type` to `none`.
+** Additionally, it uses the `withSystemProperties` method to set `my.custom.condition` to `true`.
+** Inside the lambda block of the `run` method, use AssertJ's `assertThat` on the context to call `hasSingleBean` with an `BeepGreetingService.class` argument.
+
+* Write a test case named `shouldBackOffIfGreetingServiceIsDefinedByUser` which uses the `withBean` method of the `ApplicationContextRunner` field to define a bean of type `GreetingService`.
+** Inside the lambda block of the `run` method, use AssertJ's `assertThat` on the context to call `hasSingleBean` with an `GreetingService.class` argument.
+====
+
+==== Solution
+
+[source,bash]
+....
+git checkout -f exercise-8
+....
+
+🥳 Brilliant, let's move on to the next exercise
+// end::main[]

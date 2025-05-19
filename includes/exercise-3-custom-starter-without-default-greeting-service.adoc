@@ -1,0 +1,116 @@
+// tag::main[]
+_Estimated time: ~10–15 Min._
+
+In this exercise, you will make the existing `LoggerGreetingService` available as an auto-configured bean — but only when the corresponding class is on the classpath. You will also adjust the fallback behavior of `StdOutGreetingService` so it is only used when the SLF4J-based implementation is not present.
+
+This pattern mimics common practices in Spring Boot where auto-configured beans adapt to the available classpath.
+
+==== Learnings
+- **How to auto-configure beans conditionally based on classpath presence**
+- **How to combine `@ConditionalOnClass` and `@ConditionalOnMissingClass`**
+- **How to selectively expose features outside the default starter**
+
+==== Task
+
+. In `GreetingAutoConfiguration`, register an additional `GreetingService` bean that returns a `LoggerGreetingService`.
+
+. Annotate this method with:
+- `@ConditionalOnClass(LoggerGreetingService.class)` — loads only when available
+- `@ConditionalOnMissingBean` — to allow overriding by users
+
+. Update the existing `StdOutGreetingService` bean:
+- Add `@ConditionalOnMissingClass("com.workshop.magic.service.slf4j.LoggerGreetingService")` — fallback only if SLF4J is not available
+
+. Ensure the module `{slf4j}` is **not included** in `{starter}`.
+
+. In the `{app}` module, replace the individual module dependencies with:
+- `library-spring-boot-starter`
+- `library-slf4j`
+
+✅ Start the app: You should see `LoggerGreetingService: Hola SpringIO Barcelona`.
+
+✅ Remove the `library-slf4j` dependency: You should now see `StdOutGreetingService`.
+
+==== Detailed Steps
+
+.Detailed Steps
+[%collapsible]
+====
+
+. In `GreetingAutoConfiguration.java`, add this bean method:
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnClass(LoggerGreetingService.class)
+    GreetingService slf4jGreetingService() {
+        return new LoggerGreetingService();
+    }
+
+. In the existing `stdOutGreetingService()` method, add:
+
+    @ConditionalOnMissingClass("com.workshop.magic.service.slf4j.LoggerGreetingService")
+
+. Make sure the {auto-config} module declares the dependency to {slf4j} with:
+
+    <dependency>
+        <groupId>com.workshop</groupId>
+        <artifactId>library-slf4j</artifactId>
+        <optional>true</optional>
+    </dependency>
+
+. In the {starter} module (library-spring-boot-starter), ensure {slf4j} is not added as a dependency. Only {api}, {stdout}, and {auto-config} should be included.
+
+    <dependency>
+        <groupId>com.workshop</groupId>
+        <artifactId>library-autoconfigure</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>com.workshop</groupId>
+        <artifactId>library-api</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>com.workshop</groupId>
+        <artifactId>library-stdout</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+
+    With:
+
+    <dependency>
+        <groupId>com.workshop</groupId>
+        <artifactId>library-spring-boot-starter</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>com.workshop</groupId>
+        <artifactId>library-slf4j</artifactId>
+    </dependency>
+
+. Run the application.
+
+. ✅ You should see LoggerGreetingService output.
+
+. Remove the library-slf4j dependency from the app and rerun.
+
+. ✅ You should see fallback to StdOutGreetingService.
+====
+
+==== Conclusion
+
+This pattern of classpath-based behavior is common in real-world Spring Boot libraries. It allows default behavior that can be overridden simply by adding another dependency — without requiring configuration or code changes.
+
+.Answer
+[%collapsible]
+
+Spring Boot uses classpath detection extensively to toggle features. For example, if Hibernate is on the classpath, JPA support is auto-configured. If it isn't, Spring Boot silently skips it. This reduces configuration overhead and provides smart defaults that adapt to the environment.
+
+==== Solution
+[source,bash]
+….
+git checkout -f exercise-4
+….
+
+🥳 Superb, let's move on to the next exercise
+// end::main[]

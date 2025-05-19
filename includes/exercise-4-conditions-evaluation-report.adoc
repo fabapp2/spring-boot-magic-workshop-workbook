@@ -1,0 +1,55 @@
+// tag::main[]
+_Estimated time: ~5 Min._
+
+In this exercise, you'll learn how to leverage Spring Boot's Conditions Evaluation Report to understand why certain auto-configurations are applied or not. This is especially useful when troubleshooting unexpected behavior in your application.
+
+==== Learnings
+- **How to enable and interpret the Conditions Evaluation Report**
+- **How to identify why certain beans are or aren't loaded**
+
+==== Task
+
+. Enable debug mode in your application to view the Conditions Evaluation Report:
++
+[source,properties]
+----
+debug=true
+----
++
+This can be added to your `application.properties` file or passed as a command-line argument using `--debug`.
+
+. Start your application. Upon startup, you should see a detailed report in the console that looks like:
++
+[source]
+----
+===========================
+CONDITIONS EVALUATION REPORT
+===========================
+
+Positive matches:
+-----------------
+   ...
+
+Negative matches:
+-----------------
+   ...
+----
++
+This report lists all auto-configuration classes and the conditions that determined whether they were applied.
+
+. Review the report to understand which configurations were applied and which were not, along with the reasons.
+
+. Use this information to troubleshoot any unexpected behavior or to verify that your custom configurations are being considered appropriately.
+
+==== Conclusion
+
+The Conditions Evaluation Report is a powerful tool for diagnosing configuration issues in Spring Boot applications. By understanding which conditions are met or not, you can gain insights into the auto-configuration process and ensure your application behaves as expected.
+
+==== Solution
+[source,bash]
+....
+git checkout -f exercise-5
+....
+
+🥳 Great job! Let's proceed to the next exercise.
+// end::main[]

@@ -1,0 +1,101 @@
+// tag::main[]
+_Estimated time:  ~10 Min._
+
+Make the default `StdOutGreetingService` in `{stdout}` available as an auto-configured Spring bean for Spring Boot applications that rely on `GreetingService`.
+
+==== Learnings
+- **How does Spring Boot find auto-configuration classes**
+- **How does Spring Boot provide auto-configured beans**
+- **How to allow auto-configured beans to be overwritten**
+
+==== Task
+. Create an auto-configuration class `com.workshop.magic.config.GreetingAutoConfiguration` in the `{auto-config}` module.
+
+. Add a dependency to `org.springframework.boot:spring-boot-autoconfigure` which brings the `@AutoConfiguration` annotation
+
+. Add a dependency to other required modules. Make them optional which is a best-practice for auto-configurations.
+
+. Annotate `GreetingAutoConfiguration` with `@AutoConfiguration`.
+
+. Annotate the `GreetingAutoConfiguration` with `@ConditionalOnClass(GreetingService.class)` to only process the auto-config when `GreetingService` is on the applications classpath.
+
+. This auto-configuration provides `StdOutGreetingService` as a Spring bean of type `GreetingService`.
+
+. Auto-configuration classes must be declared in a file `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` with their fully qualified name and Spring Boot will create the listed auto-configurations.
+
+. Add a dependency `library-autoconfiguration` to `app` making the auto-configured `GreetingService` available.
+
+. 🤔 Starting the application should fail . why?
+
+. To avoid conflicts and allow custom implementations, the `StdOutGreetingService` should only be created when no other bean of type `GreetingService` exists.
+This can be achieved by annotating the bean declaration with `@ConditionalOnMissingBean`, which tells Spring Boot to back off when such a bean already exists.
+
+. ✅ Starting the application should now print: _MyGreetingService: Hola SpringIO Barcelona_
+
+. Modify the application to use the `StdOutGreetingService` now.
+
+. ✅ Starting the application should now print: _StdOutGreetingService: Hola SpringIO Barcelona_
+
+NOTE: Auto-configurations must be loaded only by being named in the imports file. Make sure that they are defined in a specific package space and that they are never the target of component scanning. Furthermore, auto-configuration classes should not enable component scanning to find additional components. Specific @Import annotations should be used instead.
+
+==== Detailed Steps
+
+.Detailed Steps
+[%collapsible]
+====
+
+. Create a new Class `com.workshop.magic.config.GreetingAutoConfiguration` in the `{auto-config}` module.
+
+. Create a new file `src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` in the `{auto-config}` module. (https://docs.spring.io/spring-boot/reference/features/developing-auto-configuration.html#features.developing-auto-configuration.locating-auto-configuration-candidates[see docs])
+
+. Add the fully qualified classname of the `GreetingAutoConfiguration` class to the `.imports` file
+
+. Add the dependency to `com.workshop:library-stdout`.
+
+Add a dependency to other required modules. Make them optional which is a best-practice for auto-configurations.
+
+. Create a new `GreetingService` bean in `GreetingAutoConfiguration` that returns a new instance of `StdOutGreetingService` and initializes it with _"Hola"_ as greeting.
+
+. Annotate the `GreetingAutoConfiguration` with `@AutoConfiguration`.
+
+. Add the dependency to `org.springframework.boot:spring-boot-autoconfigure` to `{auto-config}`
+
+
+. ❌ Starting the application should fail . why?
+
+. Start the application and verify your assumption
+
+. Use the `@ConditionalOnMissingBean` annotation on the `GreetingService` bean method in `GreetingAutoConfiguration` to only load the bean when no other bean of type `GreetingService` exists. (https://docs.spring.io/spring-boot/reference/features/developing-auto-configuration.html#features.developing-auto-configuration.condition-annotations.bean-conditions[see docs])
+
+. Add the dependency to `com.workshop:auto-config` to `app`
+
+. ✅ What will happen when the application starts?
+
+. Start the application and verify your assumption
+
+. Now, remove the `MyGreetingService` class, or comment out/remove the `@Service` annotation on `MyGreetingService`.
+
+. ✅ What will happen when the application starts?
+
+. Start the application and verify your assumption
+====
+
+==== Conclusion
+Think for a moment, when is this useful and where does Spring Boot use this concept?
+
+.Answer
+[%collapsible]
+====
+Spring Boot's auto-configuration simplifies application development by automatically configuring components based on the dependencies present on the classpath. This feature reduces the need for manual setup, allowing developers to focus on business logic rather than boilerplate code.
+
+For example, adding `spring-boot-starter-data-jpa` and a dependency to the `h2` database driver sets up a `DataSource` for an in-memory database without manual configuration.
+====
+
+==== Solution
+[source,bash]
+....
+git checkout -f exercise-2
+....
+
+🥳 Fantastic, let's move on to the next exercise
+// end::main[]
