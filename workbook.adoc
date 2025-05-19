@@ -382,6 +382,15 @@ This makes it easy for end users to configure application behavior without touch
 
 Using `@ConditionalOnProperty`, you can activate specific beans based on the application's configuration, enabling powerful runtime flexibility.
 
+🤔 Why is this useful in real-world Spring Boot applications?
+
+.Answer
+[%collapsible]
+====
+It allows configuring beans provided through auto-configuration and change their behavior without the need to change the bean declaration itself.
+This enables teams to toggle functionality through properties, and provides sensible defaults with the ability to override them.
+====
+
 ==== Detailed Steps
 
 
@@ -447,14 +456,6 @@ workshop.greeting.text=Gude!
 
 TIP: The `LoggerGreetingService` bean will only be created if `library-slf4j` is on the classpath. If not, even `type=logger` will not work.
 ====
-
-
-.Answer
-[%collapsible]
-====
-It allows configuring beans provided through auto-configuration and change their behaviour without the need to change the bean declaration itself.
-====
-
 
 ==== Solution
 [source,bash]
