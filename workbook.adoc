@@ -1,5 +1,5 @@
 = Demystifying Spring Boot’s Auto-Configuration Magic
-:app:  app
+:app: app
 :api: library-api
 :auto-config: library-autoconfigure
 :stdout: library-stdout
@@ -11,7 +11,7 @@
 :doctype: article
 :toc:
 
-Workshop SpringIO 2025 - Moritz Halbritter & Fabian Krüger
+Workshop Spring I/O 2025 - Moritz Halbritter & Fabian Krüger
 
 == Getting Started
 - Checkout the workshop project from GitHub
@@ -21,6 +21,7 @@ Workshop SpringIO 2025 - Moritz Halbritter & Fabian Krüger
 cd ~
 git clone https://github.com/fabapp2/spring-boot-magic-workshop.git
 cd spring-boot-magic-workshop
+git checkout exercise-1
 ....
 
 == Project Layout
@@ -28,10 +29,10 @@ The project has these modules following the https://www.appcontinuum.io/[app con
 
 - `{app}` - The **Spring Boot application**
 - `{auto-config}` - **Spring Boot Auto-configuration** for the `library`
-- `{api}` - **Spring Boot independant** library with `GreetingService` interface
-- `{stdout}` - **Spring Boot independant** library implementation logging to stdout
-- `{slf4j}` - **Spring Boot independant** library implementation logging with slf4j
-- `{starter}` - The spring-boot-starter module
+- `{api}` - **Spring Boot independent** library with `GreetingService` interface
+- `{stdout}` - **Spring Boot independent** library implementation logging to stdout
+- `{slf4j}` - **Spring Boot independent** library implementation logging with SLF4J
+- `{starter}` - A **Spring Boot starter** to make the auto-configuration and all dependencies easily available
 
 == Exercises
 
@@ -478,10 +479,12 @@ git checkout exercise-4
 === Exercise 6: Using Custom Conditions
 _Estimated time:  ~TODO Min._
 
-It is also possible to create custom conditions as equivalent to existing `@On...` conditions.
+It is also possible to create custom conditions like the existing `@On...` conditions from Spring Boot.
+
 Let's create a custom condition that checks the system property `my.custom.condition` - just because it's simple.
 But imagine you have a more sophisticated custom check here, e.g., infrastructure checks like the https://docs.spring.io/spring-boot/reference/actuator/endpoints.html#actuator.endpoints.kubernetes-probes[Kubernetes probes].
 Or you could write a condition which triggers only on 1st of April.
+
 Oh, the possibilities!
 
 ==== Learnings
@@ -525,7 +528,7 @@ NOTE: You'll have to set `workshop.greeting.type` to something else than `logger
 ** If the value of that property is `true`, return `ConditionOutcome.match` to signal that the condition matches
 ** Otherwise, return `ConditionOutcome.noMatch` to signal that the condition didn't match
 
-* Add a new `@Bean` method to the `GreetingAutoConfiguration` class, call it `beepGreetingService`, the return type is `GreetingService`
+* Add a new `@Bean` method to the `GreetingAutoConfiguration` class, call it `beepGreetingService`, its return type is `GreetingService`
 ** Annotate this new method with `@MyCustomCondition`, `@ConditionalOnMissingBean` and `@ConditionalOnClass(BeepGreetingService.class)`
 ** Return a new instance of `BeepGreetingService` from that method
 
@@ -624,7 +627,7 @@ Spring Boot's `ApplicationContextRunner` makes this easy.
 ==== Solution
 [source,bash]
 ....
-git checkout exercise-8
+git checkout -f exercise-8
 ....
 
 🥳 Brilliant, let’s move on to the next exercise
@@ -640,11 +643,11 @@ Use the Spring Boot configuration processor to generate metadata for your config
 
 - Add the `org.springframework.boot:spring-boot-configuration-processor` to your project
 
-- Run a build and inspect the `components/library-autoconfigure/target/classes/META-INF/spring-configuration-metadata.json` file
+- Run a build and inspect the `components/{auto-config}/target/classes/META-INF/spring-configuration-metadata.json` file
 
 🤔 Think about why that file could be useful
 
-- The `text` property in `GreetingProperties`  should be renamed to `greeting`, while deprecating the `text` property. Use `@Deprecated` and `@DeprecatedConfigurationProperty` annotations to achieve this
+- The `text` property in `GreetingProperties`  should be renamed to `prefix`, while deprecating the `text` property. Use `@Deprecated` and `@DeprecatedConfigurationProperty` annotations to achieve this
 
 - Run a build and inspect the file `spring-configuration-metadata.json` again
 
@@ -658,7 +661,7 @@ Use the Spring Boot configuration processor to generate metadata for your config
 
 ==== Conclusion
 
-What values is provided by that metadata file? Who could use it?
+What value is provided by that metadata file? Who could use it?
 
 .Answer
 [%collapsible]
@@ -675,16 +678,16 @@ And the `spring-boot-properties-migrator` also uses this file to display depreca
 [%collapsible]
 ====
 
-- Add `org.springframework.boot:spring-boot-configuration-processor` to `components/library-autoconfigure/pom.xml`, with `optional = true`.
+- Add `org.springframework.boot:spring-boot-configuration-processor` to `components/{auto-config}/pom.xml`, with `optional = true`.
 - Configure the `maven-compiler-plugin` to include `org.springframework.boot:spring-boot-configuration-processor` as an annotation processor.
 You can take a look at https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.4.5&packaging=jar&jvmVersion=24&groupId=com.example&artifactId=demo&name=demo&description=Demo%20project%20for%20Spring%20Boot&packageName=com.example.demo&dependencies=configuration-processor[the POM file generated by start.spring.io] for an example.
-- Run `./mvnw compile` and inspect `components/library-autoconfigure/target/classes/META-INF/spring-configuration-metadata.json`.
-- Replace `private String text;` in the `GreetingProperties` class with `private String greeting`.
-- Annotate the `public String getText()` method with `@Deprecated` and with `@DeprecatedConfigurationProperty(replacement = "workshop.greeting.greeting")`.
-- Return `this.greeting` from the `getText()` method.
-- Assign `this.greeting` in the `setText()` method.
-- Add a new getter and setter method for `private String greeting`.
-- Run `./mvnw compile` and inspect `components/library-autoconfigure/target/classes/META-INF/spring-configuration-metadata.json`.
+- Run `./mvnw compile` and inspect `components/{auto-config}/target/classes/META-INF/spring-configuration-metadata.json`.
+- Replace `private String text;` in the `GreetingProperties` class with `private String prefix`.
+- Annotate the `public String getText()` method with `@Deprecated` and with `@DeprecatedConfigurationProperty(replacement = "workshop.greeting.prefix")`.
+- Return `this.prefix` from the `getText()` method.
+- Assign `this.prefix` in the `setText()` method.
+- Add a new getter and setter method for `private String prefix`.
+- Run `./mvnw compile` and inspect `components/{auto-config}/target/classes/META-INF/spring-configuration-metadata.json`.
 - Add `org.springframework.boot:spring-boot-properties-migrator` with `scope = runtime` to `app/app/pom.xml`.
 - Run the application
 
@@ -693,13 +696,13 @@ You can take a look at https://start.spring.io/#!type=maven-project&language=jav
 ==== Solution
 [source,bash]
 ....
-git checkout TODO-MH
+git checkout -f main
 ....
 
 == Resources
 
 === Related Talk
-https://2025.springio.net/sessions/demystifying-spring-boot-magic/
+https://2025.springio.net/sessions/demystifying-spring-boot-magic/[Demystifying Spring Boot Magic by Patrick Baumgartner]
 
 ==== Reference
 - https://docs.spring.io/spring-boot/reference/using/auto-configuration.html[Spring Boot Auto-configuration]
