@@ -54,13 +54,15 @@ Make the default `StdOutGreetingService` in `{stdout}` available as auto-configu
 ==== Task
 - Create a auto-configuration class `com.workshop.magic.config.GreetingAutoConfiguration` in the `{auto-config}` module.
 
+- Add a dependency to `org.springframework.boot:spring-boot-autoconfigure` which  brings the `@AutoConfiguration` annotation
+
+- Annotate `GreetingAutoConfiguration` with `@AutoConfiguration`.
+
 - This auto-configuration provides `StdOutGreetingService` as a Spring bean of type `GreetingService`.
 
 - Auto-configuration classes must be declared in a file `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` with their fully qualified name and Spring Boot will create the listed auto-configurations.
 
-- Add a dependency to `org.springframework.boot:spring-boot-autoconfigure` which  brings the `@AutoConfiguration` annotation
-
-- Annotate `GreetingAutoConfiguration` with `@AutoConfiguration`.
+- Add a dependency `library-autoconfiguration` to `app` making the auto-configured `GreetingService` available.
 
 🤔 Starting the application should fail - why?
 
