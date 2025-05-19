@@ -93,9 +93,10 @@ NOTE: Auto-configurations must be loaded only by being named in the imports file
 
 - Create a new `GreetingService` bean in `GreetingAutoConfiguration` that returns a new instance of `StdOutGreetingService` and initializes it with _"Hola"_ as greeting.
 
+- Annotate the `GreetingAutoConfiguration` with `@AutoConfiguration`.
+
 - Add the dependency to `org.springframework.boot:spring-boot-autoconfigure` to `{auto-config}`
 
-- The `GreetingAutoConfiguration` must be annotated with `@AutoConfiguration`.
 
 ❌ Starting the application should fail - why?
 
