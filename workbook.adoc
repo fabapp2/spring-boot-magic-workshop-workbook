@@ -231,7 +231,7 @@ It allows configuring beans provided through auto-configuration and change their
 ==== Solution
 [source,bash]
 ....
-git checkout exercise-3
+git checkout exercise-4
 ....
 
 
