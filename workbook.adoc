@@ -13,12 +13,6 @@
 
 Workshop SpringIO 2025 - Moritz Halbritter & Fabian Krüger
 
-== Questions / Clarify
-- [ ] Exercise for starters?
-- [ ] Question: Given Phils comment in `ConditionalOnClass`, isn't `@ConditionalOnClass` with `GreetingService` problematic
-- [ ] Should we have an exercise to understand the `@ConditionalOnClass` in our auto-config
-- [ ] No `@AutoConfiguration` annotation required in Exercise 3
-
 == Getting Started
 - Checkout the workshop project from GitHub
 
