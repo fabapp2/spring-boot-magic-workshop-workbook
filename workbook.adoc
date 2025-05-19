@@ -172,79 +172,22 @@ You will now package the `{auto-config}´ and `{stdout}` modules into a reusable
 
 
 ==== Solution
-🥳 Terrific, let’s move on to the next exercise
-
-=== Exercise 3: Make The Greeting Configurable
-_Estimated time: ~10 Min._
-
-You want to allow applications to configure the `GreetingService` without implementing it.
-
-==== Learnings
-- **How to parametrize auto-configured beans**
-
-==== Task
-- Find the `GreetingProperties` in the `{auto-config}` module.
-
-- Annotate the `GreetingAutoConfiguration` with `@EnableConfigurationProperties(GreetingProperties.class)`
-
-- Annotate the GreetingProperties with `@ConfigurationProperties(prefix = "workshop.greeting")`
-
-
-- Use the property as constructor argument for the  `StdOutGreetingService`.
-
-✅ Run the application and see how the service is greeting now.
-
-- Define the `workshop.greeting.text` property and set it to "Gude!" or any greeting you prefer.
-
-✅ Run the application and see how the service is greeting now.
-
-==== Conclusion
-When does this become handy?
-
-.Answer
-[%collapsible]
-====
-It allows configuring beans provided through auto-configuration and change their behaviour without the need to change the bean declaration itself.
-====
-
-==== Detailed Steps
-
-.Detailed Steps
-[%collapsible]
-====
-- Find the `GreetingProperties` in the `{auto-config}` module.
-
-- Annotate the `GreetingAutoConfiguration` with `@EnableConfigurationProperties(GreetingProperties.class)`
-
-- Annotate the `GreetingProperties` with `@ConfigurationProperties(prefix = "workshop.greeting")`
-
-- Provide `GreetingProperties` as parameter to the bean declaration of `StdOutGreetingService`
-
-- Provide the property as constructor argument for the  `StdOutGreetingService`.
-
-✅ Run the application and see how the service is greeting now.
-
-- Define the `workshop.greeting.text` property and set it to "Gude!" or any greeting you prefer.
-
-✅ Run the application and see how the service is greeting now.
-====
-
-==== Solution
 [source,bash]
 ....
-git checkout exercise-4
+git checkout -f exercise-3
 ....
 
-🥳 Terrific, let’s move on to the next exercise
+🥳 Awesome, let’s move on to the next exercise
 
-=== Exercise 4: GreetingService Conditional On Property
+
+=== Exercise 3: GreetingService Conditional On Property
 _Estimated Time: ~10Min._
 
 ==== Learnings
 - **How to make auto-configured beans depending on properties**
 
 ==== Task
-- Provide an alternative `GreetingService` implementation `LoggerGreetingService` that uses a logging framework.
+- Make the alternative `GreetingService` implementation `LoggerGreetingService` available as auto-configured bean. This implementation uses a logging framework.
 
 - Declare a new bean for this new service that lives in `library-slf4j`.
 
@@ -310,6 +253,73 @@ _Estimated Time: ~10Min._
 
 ✅ Run the application - why does it start?
 ====
+
+
+=== Exercise 4: Conditions Evaluation Report
+
+
+=== Exercise 5: Make The Greeting Configurable
+_Estimated time: ~10 Min._
+
+You want to allow applications to configure the `GreetingService` without implementing it.
+
+==== Learnings
+- **How to parametrize auto-configured beans**
+
+==== Task
+- Find the `GreetingProperties` in the `{auto-config}` module.
+
+- Annotate the `GreetingAutoConfiguration` with `@EnableConfigurationProperties(GreetingProperties.class)`
+
+- Annotate the GreetingProperties with `@ConfigurationProperties(prefix = "workshop.greeting")`
+
+
+- Use the property as constructor argument for the  `StdOutGreetingService`.
+
+✅ Run the application and see how the service is greeting now.
+
+- Define the `workshop.greeting.text` property and set it to "Gude!" or any greeting you prefer.
+
+✅ Run the application and see how the service is greeting now.
+
+==== Conclusion
+When does this become handy?
+
+.Answer
+[%collapsible]
+====
+It allows configuring beans provided through auto-configuration and change their behaviour without the need to change the bean declaration itself.
+====
+
+==== Detailed Steps
+
+.Detailed Steps
+[%collapsible]
+====
+- Find the `GreetingProperties` in the `{auto-config}` module.
+
+- Annotate the `GreetingAutoConfiguration` with `@EnableConfigurationProperties(GreetingProperties.class)`
+
+- Annotate the `GreetingProperties` with `@ConfigurationProperties(prefix = "workshop.greeting")`
+
+- Provide `GreetingProperties` as parameter to the bean declaration of `StdOutGreetingService`
+
+- Provide the property as constructor argument for the  `StdOutGreetingService`.
+
+✅ Run the application and see how the service is greeting now.
+
+- Define the `workshop.greeting.text` property and set it to "Gude!" or any greeting you prefer.
+
+✅ Run the application and see how the service is greeting now.
+====
+
+==== Solution
+[source,bash]
+....
+git checkout exercise-4
+....
+
+🥳 Terrific, let’s move on to the next exercise
 
 
 === Exercise 5: Custom Starter Without Default GreetingService
