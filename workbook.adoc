@@ -359,122 +359,93 @@ _Estimated Time: ~10Min._
 - **How to make auto-configured beans depending on properties**
 
 ==== Task
-. Make the alternative `GreetingService` implementation `LoggerGreetingService` available as auto-configured bean. This implementation uses a logging framework.
 
-. Declare a new bean for this new service that lives in `library-slf4j`.
-
-. Add a dependency to `com.workshop:library-slf4j` in the `{auto-config}` module.
-
-. Use the `@ConditionalOnProperty` annotation to the new bean to allow the application to decide which service bean should be used by setting a property `workshop.greeting.type`.
-
-. ✅ Run the application . why does fail?
-
-. Fix the issue.
-
-. Now the application should be able to use `workshop.greeting.type=logger` or `workshop.greeting.type=stdout` to decide which service to use.
-
-. Remove the property
-
-. ✅ Run the application . why does it start?
-
-. define a property `workshop.greeting.type`
-
-
-. ✅ Run the application . why does fail? +
-
-. If no property is given it should be written to stdout.
-
-
-. Find the `GreetingProperties` in the `{auto-config}` module.
-
-. Annotate the `GreetingAutoConfiguration` with `@EnableConfigurationProperties(GreetingProperties.class)` (This annotation ensures Spring Boot binds the values from `application.properties` into the `GreetingProperties` class. Without it, the injection will fail at runtime.)
-
-. Annotate the GreetingProperties with `@ConfigurationProperties(prefix = "workshop.greeting")`
-
-
-. Use the property as constructor argument for the  `StdOutGreetingService`.
-
-. Also pass `GreetingProperties` into both `GreetingService` bean methods:
-
-    [source,java]
-    ----
-    GreetingService stdOutGreetingService(GreetingProperties properties) {
-        return new StdOutGreetingService(properties.getText());
-    }
-
-    GreetingService slf4jGreetingService(GreetingProperties properties) {
-        return new LoggerGreetingService(properties.getText());
-    }
-    ----
-
-. ✅ Run the application and see how the service is greeting now.
-
-. Define the `workshop.greeting.text` property and set it to "Gude!" or any greeting you prefer.
-
-. ✅ Run the application and see how the service is greeting now.
+. Make the alternative `GreetingService` implementation `LoggerGreetingService` available as auto-configured bean using properties.
+. Add a new bean declaration for `LoggerGreetingService` in the auto-configuration class.
+. Add a dependency to `{slf4j}` in the `{auto-config}` module.
+. Annotate the new bean with a property-based condition to activate it only when `workshop.greeting.type=logger`.
+. Annotate the existing bean for `StdOutGreetingService` to act as fallback when the property is `stdout` or not set.
+. Provide a configuration class that binds properties with prefix `workshop.greeting`.
+. Enable property binding for the configuration class in the auto-configuration class.
+. Inject the bound configuration into both beans and pass the greeting text to the constructor.
+. Add the following properties in `application.properties`:
+    - `workshop.greeting.text`
+    - `workshop.greeting.type`
+. Start the application and observe which implementation is used.
+. Remove or change the `workshop.greeting.type` property and observe the fallback behavior.
 
 
 ==== Conclusion
 
+In this exercise, you learned how to make auto-configured beans dynamic using external properties.
+This makes it easy for end users to configure application behavior without touching Java code.
+
+Using `@ConditionalOnProperty`, you can activate specific beans based on the application's configuration, enabling powerful runtime flexibility.
 
 ==== Detailed Steps
+
 
 .Detailed Steps
 [%collapsible]
 ====
-. Provide an alternative `GreetingService` implementation `LoggerGreetingService` that uses a logging framework.
 
-. Add a dependency to `com.workshop:library-slf4j` in `{auto-config}`.
-
-. Declare a new bean for `LoggerGreetingService` in `GreetingAutoConfiguration`.
-
-. Add a dependency to `org.slf4j:slf4j-simple` in the `library-slf4j` module.
-
-. Use the `@ConditionalOnProperty(name="workshop.greeting.type")` annotation to the new bean to allow the application to decide which service bean should be used by setting the property.
-
-. ✅ Run the application . why does it start?
-
-. define a property `workshop.greeting.type`
-
-. ✅ Run the application . why does fail?
-
-. To fix the issue add `@ConditionalOnProperty(name="workshop.greeting.type", havingValue="stdout")` to the `StdOutGreetingService` bean and add the attribute `havingValue = "logger"` to the `LoggerGreetingService` bean.
-
-. ✅ Run the application . why does it start?
-
-. Now the application should be able to use `workshop.greeting.type=logger` or `workshop.greeting.type=stdout` to decide which service to use.
-
-. Remove the property
-
-. ✅ Run the application . why does fail?
+. In the `{auto-config}` module, open the `GreetingProperties` class and annotate it with:
 +
-NOTE: The `LoggerGreetingService` will only be created if the `library-slf4j` module is present on the classpath.
+[source,java]
+----
+@ConfigurationProperties(prefix = "workshop.greeting")
+----
 
-
-. If no property is given it should be written to stdout.
-
-. Add the attribute `havingValue = "stdout"` to `StdOutGreetingService` bean.
-
-. ✅ Run the application . why does it start?
-
-
-. Find the `GreetingProperties` in the `{auto-config}` module.
-
-. Annotate the `GreetingAutoConfiguration` with `@EnableConfigurationProperties(GreetingProperties.class)`
-
-. Annotate the `GreetingProperties` with `@ConfigurationProperties(prefix = "workshop.greeting")`
-
-. Provide `GreetingProperties` as parameter to the bean declaration of `StdOutGreetingService`
-
-. Provide the property as constructor argument for the  `StdOutGreetingService`.
-
-. ✅ Run the application and see how the service is greeting now.
+. In the same module, annotate `GreetingAutoConfiguration` with:
 +
-TIP: Try changing `workshop.greeting.type=stdout` or removing it entirely to observe how Spring Boot picks the fallback implementation (`StdOutGreetingService`).
+[source,java]
+----
+@EnableConfigurationProperties(GreetingProperties.class)
+----
 
-. Define the `workshop.greeting.text` property and set it to "Gude!" or any greeting you prefer.
+. Add the optional dependency to `{slf4j}` in `{auto-config}/pom.xml`.
 
-. ✅ Run the application and see how the service is greeting now.
+. In `GreetingAutoConfiguration`, inject `GreetingProperties` into both `GreetingService` bean methods.
+
+. Replace the constructor calls with:
++
+[source,java]
+----
+new StdOutGreetingService(properties.getText())
+new LoggerGreetingService(properties.getText())
+----
+
+. Annotate the `StdOutGreetingService` bean method with:
++
+[source,java]
+----
+@ConditionalOnProperty(prefix = "workshop.greeting", name = "type", havingValue = "stdout", matchIfMissing = true)
+----
+
+. Annotate the `LoggerGreetingService` bean method with:
++
+[source,java]
+----
+@ConditionalOnProperty(prefix = "workshop.greeting", name = "type", havingValue = "logger")
+----
+
+. In `application.properties` set the following:
++
+[source,properties]
+----
+workshop.greeting.type=logger
+workshop.greeting.text=Gude!
+----
+
+. Run the application.
+
+. ✅ You should see: _LoggerGreetingService: Gude SpringIO Barcelona_
+
+. Remove the `workshop.greeting.type` line and restart the app.
+
+. ✅ You should now see: _StdOutGreetingService: Gude SpringIO Barcelona_
+
+TIP: The `LoggerGreetingService` bean will only be created if `library-slf4j` is on the classpath. If not, even `type=logger` will not work.
 ====
 
 
@@ -619,7 +590,6 @@ Spring Boot's `ApplicationContextRunner` makes this easy.
 .Detailed Steps
 [%collapsible]
 ====
-
 * Create a class named `GreetingAutoConfigurationTest` in `auto-config/src/test/java` in the package `com.workshop.magic.config`.
 
 * Create a field of type `ApplicationContextRunner`, and use the fluent API to call `withConfiguration` with `AutoConfigurations.of(GreetingAutoConfiguration.class)`.
@@ -639,10 +609,10 @@ Spring Boot's `ApplicationContextRunner` makes this easy.
 
 * Write a test case named `shouldBackOffIfGreetingServiceIsDefinedByUser` which uses the `withBean` method of the `ApplicationContextRunner` field to define a bean of type `GreetingService`.
 ** Inside the lambda block of the `run` method, use AssertJ's `assertThat` on the context to call `hasSingleBean` with an `GreetingService.class` argument.
-
 ====
 
 ==== Solution
+
 [source,bash]
 ....
 git checkout -f exercise-8
@@ -689,8 +659,6 @@ Additionally, deprecations and their replacement are also recorded in that file,
 And the `spring-boot-properties-migrator` also uses this file to display deprecations on startup and to provide the automatic mapping from the old property to the new one.
 ====
 
-
-==== Detailed Steps
 
 .Detailed Steps
 [%collapsible]
