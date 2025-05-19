@@ -169,7 +169,7 @@ You will now package the `{auto-config}´ and `{stdout}` modules into a reusable
 - Simplifies integration (just add one dependency)
 ====
 
-🥳 Awesome, let’s move on to the next exercise
+
 
 ==== Solution
 🥳 Terrific, let’s move on to the next exercise
