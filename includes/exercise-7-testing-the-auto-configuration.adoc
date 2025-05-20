@@ -22,19 +22,6 @@ Create unit tests to ensure that the `GreetingAutoConfiguration` works as expect
 
 .. That user-defined beans take precedence over the auto-configured `GreetingService` beans — essentially testing that `@ConditionalOnMissingBean` works.
 
-=== Conclusion
-
-What’s the benefit of writing a unit test for an auto-configuration?
-
-.Answer
-[%collapsible]
-====
-Auto-configurations can contain a lot of conditions, sometimes even custom ones. As this auto-configuration is part of your codebase,
-you should also unit-test it to ensure that it behaves as designed, same as the rest of your code.
-Spring Boot's `ApplicationContextRunner` makes this easy.
-====
-
-
 === Detailed Steps
 
 .Detailed Steps
@@ -59,6 +46,18 @@ Spring Boot's `ApplicationContextRunner` makes this easy.
 
 . Write a test case named `shouldBackOffIfGreetingServiceIsDefinedByUser` which uses the `withBean` method of the `ApplicationContextRunner` field to define a bean of type `GreetingService`.
 .. Inside the lambda block of the `run` method, use AssertJ's `assertThat` on the context to call `hasSingleBean` with an `GreetingService.class` argument.
+====
+
+=== Conclusion
+
+What’s the benefit of writing a unit test for an auto-configuration?
+
+.Answer
+[%collapsible]
+====
+Auto-configurations can contain a lot of conditions, sometimes even custom ones. As this auto-configuration is part of your codebase,
+you should also unit-test it to ensure that it behaves as designed, same as the rest of your code.
+Spring Boot's `ApplicationContextRunner` makes this easy.
 ====
 
 === Solution
