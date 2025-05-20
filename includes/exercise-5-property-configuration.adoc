@@ -18,7 +18,7 @@
 
 . Add a property `workshop.greeting.text=Gude` to `application.properties`.
 
-. ✅ Start the application. It should now print _LoggerGreetingService: Gude SpringIO Barcelona_ or _StdOutGreetingService: Gude SpringIO Barcelona_.
+. ✅ Start the application. It should now print _LoggerGreetingService: Gude Spring I/0 Barcelona_ or _StdOutGreetingService: Gude Spring I/0 Barcelona_.
 
 
 === Detailed Steps A
@@ -29,7 +29,7 @@
 ====
 
 
-. In the `{auto-config}` annotate `GreetingAutoConfiguration` with:
+. In `{auto-config}`, annotate `GreetingAutoConfiguration` with:
 +
 [source,java]
 ----
@@ -71,7 +71,7 @@ workshop.greeting.text=Gude
 
 . Run the application
 
-. ✅ You should see _LoggerGreetingService: Gude SpringIO Barcelona_ or _StdOutGreetingService: Gude SpringIO Barcelona_ now.
+. ✅ You should see _LoggerGreetingService: Gude Spring I/0 Barcelona_ or _StdOutGreetingService: Gude Spring I/0 Barcelona_ now.
 
 
 ====
@@ -89,11 +89,11 @@ workshop.greeting.text=Gude
 
 . Add `workshop.greeting.type=stdout` to your `application.properties`
 
-. ✅ Start the application. It should now print _StdOutGreetingService: Gude SpringIO Barcelona_.
+. ✅ Start the application. It should now print _StdOutGreetingService: Gude Spring I/0 Barcelona_.
 
 . Change `workshop.greeting.type` to `logger`.
 
-. ✅ Start the application. It should now print _LoggerGreetingService: Gude SpringIO Barcelona_.
+. ✅ Start the application. It should now print _LoggerGreetingService: Gude Spring I/0 Barcelona_.
 
 . Remove the `workshop.greeting.type` from `application.properties`
 
@@ -101,7 +101,7 @@ workshop.greeting.text=Gude
 
 . Change the annotation attributes from `@ConditionalOnProperty` on the `StdOutGreetingService` to also match if the property is missing.
 
-. ✅ Start the application. It should now print _StdOutGreetingService: Gude SpringIO Barcelona_.
+. ✅ Start the application. It should now print _StdOutGreetingService: Gude Spring I/0 Barcelona_.
 
 === Detailed Steps
 
@@ -133,7 +133,7 @@ workshop.greeting.type=stdout
 
 . Run the application.
 
-. ✅ You should see: _StdOutGreetingService: Gude SpringIO Barcelona_
+. ✅ You should see: _StdOutGreetingService: Gude Spring I/0 Barcelona_
 
 . In `application.properties` set the following:
 +
@@ -144,7 +144,7 @@ workshop.greeting.type=logger
 
 . Run the application.
 
-. ✅ You should see: _LoggerGreetingService: Gude SpringIO Barcelona_
+. ✅ You should see: _LoggerGreetingService: Gude Spring I/0 Barcelona_
 +
 TIP: The `LoggerGreetingService` bean will only be created if `library-slf4j` is on the classpath. If not, even `type=logger` will not work.
 
@@ -161,7 +161,7 @@ TIP: The `LoggerGreetingService` bean will only be created if `library-slf4j` is
 
 . Run the application.
 
-. ✅ You should see: _StdOutGreetingService: Gude SpringIO Barcelona_
+. ✅ You should see: _StdOutGreetingService: Gude Spring I/0 Barcelona_
 ====
 
 === Conclusion
