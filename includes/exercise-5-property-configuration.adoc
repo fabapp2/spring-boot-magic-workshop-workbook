@@ -3,41 +3,29 @@ _Estimated Time: ~10Min._
 
 ==== Learnings
 - **How to parametrize auto-configured beans**
-- **How to make auto-configured beans depending on properties**
+- **How to create auto-configured beans depending on properties**
 
 ==== Task
 
-. Make the alternative `GreetingService` implementation `LoggerGreetingService` available as auto-configured bean using properties.
-. Add a new bean declaration for `LoggerGreetingService` in the auto-configuration class.
-. Add a dependency to `{slf4j}` in the `{auto-config}` module.
-. Annotate the new bean with a property-based condition to activate it only when `workshop.greeting.type=logger`.
-. Annotate the existing bean for `StdOutGreetingService` to act as fallback when the property is `stdout` or not set.
-. Provide a configuration class that binds properties with prefix `workshop.greeting`.
-. Enable property binding for the configuration class in the auto-configuration class.
-. Inject the bound configuration into both beans and pass the greeting text to the constructor.
-. Add the following properties in `application.properties`:
-    - `workshop.greeting.text`
-    - `workshop.greeting.type`
-. Start the application and observe which implementation is used.
-. ✅ You should see: LoggerGreetingService: Gude SpringIO Barcelona
-. Remove or change the `workshop.greeting.type` property and observe the fallback behavior.
-
-
-==== Conclusion
-
-In this exercise, you learned how to make auto-configured beans dynamic using external properties.
-This allows developers to adapt behavior using simple property values, without needing custom profiles or bean overrides.
-
-Using `@ConditionalOnProperty`, you can activate specific beans based on the application's configuration, enabling powerful runtime flexibility.
-
-🤔 Why is this useful in real-world Spring Boot applications?
-
-.Answer
-[%collapsible]
-====
-It allows configuring beans provided through auto-configuration and changing their behavior without the need to change the bean declaration itself.
-This enables teams to toggle functionality through properties, and provides sensible defaults with the ability to override them.
-====
+. There's a `GreetingProperties` class in the `{auto-config}` module which should be filled with values from the `application.properties`.
+. Add `@ConfigurationProperties` to this class and let it bind to the `workshop.greeting` prefix.
+. The `StdOutGreetingService` and the `LoggerGreetingService` have constructors which allows you to customize the greeting. By default it's "Hola", but this should now be configurable via the `application.properties`.
+. Annotate the `GreetingAutoConfiguration` with `@EnableConfigurationProperties(GreetingProperties.class)` to enable loading the values from the `application.properties`.
+. Change the bean methods for `StdOutGreetingService` and `LoggerGreetingService` to inject `GreetingProperties` and configure the greeting prefix.
+. Add a property `workshop.greeting.text=Gude` to `application.properties`.
+. ✅ Start the application. It should now print _LoggerGreetingService: Gude SpringIO Barcelona_ or _StdOutGreetingService: Gude SpringIO Barcelona_.
+. Now, we want a property called `workshop.greeting.type` which controls the type of `GreetingService` created:
+- `workshop.greeting.type=logger` should create a `LoggerGreetingService` bean.
+- `workshop.greeting.type=stdout` should create a `StdOutGreetingService` bean.
+. You can use `@ConditionalOnProperty` for that. Annotate both bean methods with `@ConditionalOnProperty` and set the annotation attributes accordingly.
+. Add `workshop.greeting.type=stdout` to your `application.properties`
+. ✅ Start the application. It should now print _StdOutGreetingService: Gude SpringIO Barcelona_.
+. Change `workshop.greeting.type` to `logger`.
+. ✅ Start the application. It should now print _LoggerGreetingService: Gude SpringIO Barcelona_.
+. Remove the `workshop.greeting.type` from `application.properties`
+. 🤔 Start the application. It now fails. Why is that?
+. Change the annotation attributes from `@ConditionalOnProperty` on the `StdOutGreetingService` to also match if the property is missing.
+. ✅ Start the application. It should now print _StdOutGreetingService: Gude SpringIO Barcelona_.
 
 ==== Detailed Steps
 
@@ -60,52 +48,111 @@ This enables teams to toggle functionality through properties, and provides sens
 @EnableConfigurationProperties(GreetingProperties.class)
 ----
 
-. Add the optional dependency to `{slf4j}` in `{auto-config}/pom.xml`.
+. In `GreetingAutoConfiguration`, inject `GreetingProperties` into both `GreetingService` bean methods:
++
+[source,java]
+----
+GreetingService stdOutGreetingService(GreetingProperties properties)
 
-. In `GreetingAutoConfiguration`, inject `GreetingProperties` into both `GreetingService` bean methods.
+GreetingService slf4jGreetingService(GreetingProperties properties)
+----
++
 
 . Replace the constructor calls with:
 +
 [source,java]
 ----
 new StdOutGreetingService(properties.getText())
+
 new LoggerGreetingService(properties.getText())
-----
-
-. Annotate the `StdOutGreetingService` bean method with:
-+
-[source,java]
-----
-@ConditionalOnProperty(prefix = "workshop.greeting", name = "type", havingValue = "stdout", matchIfMissing = true)
-----
-
-. Annotate the `LoggerGreetingService` bean method with:
-+
-[source,java]
-----
-@ConditionalOnProperty(prefix = "workshop.greeting", name = "type", havingValue = "logger")
 ----
 
 . In `application.properties` set the following:
 +
 [source,properties]
 ----
+workshop.greeting.text=Gude
+----
+
+. Run the application
+
+. ✅ You should see _LoggerGreetingService: Gude SpringIO Barcelona_ or _StdOutGreetingService: Gude SpringIO Barcelona_.
+
+. Annotate the `StdOutGreetingService` bean method with:
++
+[source,java]
+----
+@ConditionalOnProperty(name = "workshop.greeting.type", havingValue = "stdout")
+----
+
+. Annotate the `LoggerGreetingService` bean method with:
++
+[source,java]
+----
+@ConditionalOnProperty(name = "workshop.greeting.type", havingValue = "logger")
+----
+
+. In `application.properties` set the following:
++
+[source,properties]
+----
+workshop.greeting.type=stdout
+----
+
+. Run the application.
+
+. ✅ You should see: _StdOutGreetingService: Gude SpringIO Barcelona_
+
+. In `application.properties` set the following:
++
+[source,properties]
+----
 workshop.greeting.type=logger
-workshop.greeting.text=Gude!
 ----
 
 . Run the application.
 
 . ✅ You should see: _LoggerGreetingService: Gude SpringIO Barcelona_
++
+TIP: The `LoggerGreetingService` bean will only be created if `library-slf4j` is on the classpath. If not, even `type=logger` will not work.
 
 . Remove the `workshop.greeting.type` line and restart the app.
+
+. Startup of the app fails, because there's no `GreetingService` available. You can use the Conditions Evaluation Report to find out why.
+
+. Change the annotation of the `StdOutGreetingService` bean method in `GreetingAutoConfiguration` to look like this:
 +
-TIP: If you don't see the logger-based output, double-check that `library-slf4j` is included in the app module and that the property `type=logger` is set.
+[source,java]
+----
+@ConditionalOnProperty(name = "workshop.greeting.type", havingValue = "stdout", matchIfMissing = true)
+----
 
-. ✅ You should now see: _StdOutGreetingService: Gude SpringIO Barcelona_
+. Run the application.
 
-TIP: The `LoggerGreetingService` bean will only be created if `library-slf4j` is on the classpath. If not, even `type=logger` will not work.
+. ✅ You should see: _StdOutGreetingService: Gude SpringIO Barcelona_
 ====
+
+==== Conclusion
+
+In this exercise, you learned how to read properties from `application.properties` and use the values to configure your beans.
+This can be used to configure beans, or it can also be used to influence which beans are created at all.
+
+Using `@ConditionalOnProperty`, you can activate specific beans based on the application's configuration, enabling powerful runtime flexibility.
+This allows users to influence the behavior using simple property values, without needing to write their own bean overrides.
+
+🤔 Why is this useful in real-world Spring Boot applications?
+
+.Answer
+[%collapsible]
+====
+It allows configuring beans provided through auto-configuration and changing their behavior without the need to change the bean declaration itself.
+This enables teams to toggle functionality through properties, and provides sensible defaults with the ability to override them.
+
+An example in Spring Boot would be the `management.server.port` property. If set, an additional webserver is started on the management port which provides access to actuator, etc.
+A lot of beans are created in the background to make that happen, all controlled by a single user-visible property.
+====
+
+
 
 ==== Solution
 [source,bash]
