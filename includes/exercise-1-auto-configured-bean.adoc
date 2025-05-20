@@ -18,7 +18,7 @@ Make the `StdOutGreetingService` from `{stdout}` available as an auto-configured
 
 . Annotate the `GreetingAutoConfiguration` with `@ConditionalOnClass(GreetingService.class)` to only process the auto-config when `GreetingService` is on the application classpath.
 
-. This auto-configuration provides `StdOutGreetingService` as a Spring bean of type `GreetingService`.
+. This auto-configuration should provide `StdOutGreetingService` as a Spring bean of type `GreetingService`. Use the `@Bean` annotation for that.
 
 . Auto-configuration classes must be declared in a classpath resource file named `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`. This file contains fully qualified names of the auto-configuration so that Spring Boot can find them.
 
