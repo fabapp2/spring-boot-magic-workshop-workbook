@@ -12,13 +12,6 @@ You will now package the `{auto-config}` and `{stdout}` modules into a reusable 
 . Replace direct dependencies to `{auto-config}` and `{stdout}` in the `{app}` module with the new starter.
 . ✅ Confirm that the app still works as expected and prints the greeting.
 
-==== Detailed Steps
-.Detailed Steps
-[%collapsible]
-====
-TODO
-====
-
 ==== Conclusion
 🤔 Why create a starter? When could that be useful?
 
