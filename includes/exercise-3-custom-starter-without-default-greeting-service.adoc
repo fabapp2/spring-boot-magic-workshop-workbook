@@ -38,6 +38,14 @@ This pattern mimics common practices in Spring Boot where auto-configured beans 
 [%collapsible]
 ====
 
+. Make sure the `{auto-config}` module declares a dependency to `{slf4j}` with:
+
+    <dependency>
+        <groupId>com.workshop</groupId>
+        <artifactId>library-slf4j</artifactId>
+        <optional>true</optional>
+    </dependency>
+
 . In the `GreetingAutoConfiguration` class, add this bean method:
 
     @Bean
@@ -50,14 +58,6 @@ This pattern mimics common practices in Spring Boot where auto-configured beans 
 . On the existing `stdOutGreetingService()` method, add:
 
     @ConditionalOnMissingClass("com.workshop.magic.service.slf4j.LoggerGreetingService")
-
-. Make sure the `{auto-config}` module declares a dependency to `{slf4j}` with:
-
-    <dependency>
-        <groupId>com.workshop</groupId>
-        <artifactId>library-slf4j</artifactId>
-        <optional>true</optional>
-    </dependency>
 
 . In the `{starter}` module, ensure `{slf4j}` is **not** added as a dependency. Only `{api}` (not necessarily needed, as it comes transitively through `{stdout}`), `{stdout}`, and `{auto-config}` should be included.
 
@@ -83,7 +83,7 @@ This pattern mimics common practices in Spring Boot where auto-configured beans 
 
 . Run the application. `LoggerGreetingService` is now used, as it's on the classpath. The `StdOutGreetingService` bean isn't created, as `LoggerGreetingService` is on the classpath.
 
-. Remove the `{slf4j}` dependency from the app module and re-run it.
+. Remove the `{slf4j}` dependency from the `{app}` module and re-run it.
 
 . `StdOutGreetingService` is now used, as `LoggerGreetingService` is not on the classpath.
 ====
