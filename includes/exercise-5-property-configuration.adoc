@@ -171,7 +171,7 @@ TIP: The `LoggerGreetingService` bean will only be created if `library-slf4j` is
 === Conclusion
 
 In this exercise, you learned how to read properties from `application.properties` and use the values to configure your beans.
-This can be used to configure beans, or it can also be used to influence which beans are created at all.
+This can not only be used to configure beans, but it can also be used to influence which beans are created at all.
 
 Using `@ConditionalOnProperty`, you can activate specific beans based on the application's configuration, enabling powerful runtime flexibility.
 This allows users to influence the behavior using simple property values, without needing to write their own bean overrides.
@@ -185,7 +185,7 @@ It allows configuring beans provided through auto-configuration and changing the
 This enables teams to toggle functionality through properties, and provides sensible defaults with the ability to override them.
 
 An example in Spring Boot would be the `management.server.port` property. If set, an additional webserver is started on the management port which provides access to actuator, etc.
-A lot of beans are created in the background to make that happen, all controlled by a single user-visible property.
+A lot of beans are created under the hood to make that happen, all controlled by a single user-visible property.
 ====
 
 === Solution
