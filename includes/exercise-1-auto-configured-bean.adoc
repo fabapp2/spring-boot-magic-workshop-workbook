@@ -83,7 +83,7 @@ Think for a moment, when is this useful and where does Spring Boot use this conc
 Spring Boot's auto-configuration simplifies application development by automatically configuring components based on the dependencies present on the classpath.
 This feature reduces the need for manual setup, allowing developers to focus on business logic rather than boilerplate code.
 
-For example, adding `spring-boot-starter-data-jpa` and a dependency to the `h2` database driver sets up a `DataSource` for an in-memory database without manual configuration.
+For example, adding `spring-boot-starter-web` sets up a whole webserver without manual configuration.
 ====
 
 ==== Solution
