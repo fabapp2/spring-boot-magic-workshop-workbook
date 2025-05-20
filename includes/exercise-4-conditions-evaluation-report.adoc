@@ -36,7 +36,7 @@ Negative matches:
 +
 This report lists all auto-configuration classes with their conditions, and they were applied or not.
 
-. Review the report to understand which configurations were applied and which were not, along with the reasons.
+. Review the report in regard to `GreetingAutoConfiguration` and understand which configurations were applied and which were not, along with the reasons.
 
 . Use this information to troubleshoot any unexpected behavior or to verify that your custom configurations are being considered appropriately.
 
