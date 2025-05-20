@@ -1,5 +1,5 @@
 // tag::main[]
-_Estimated time:  ~TODO-MH Min._
+_Estimated time:  ~10 Min._
 
 Use the Spring Boot configuration processor to generate metadata for your configuration properties.
 
