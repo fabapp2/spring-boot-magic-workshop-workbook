@@ -32,15 +32,40 @@ Create unit tests to ensure that the `GreetingAutoConfiguration` works as expect
 . Create a class named `GreetingAutoConfigurationTest` in `{auto-config}/src/test/java` in the package `com.workshop.magic.config`.
 
 . Create a field of type `ApplicationContextRunner`, and use the fluent API to call `withConfiguration` with `AutoConfigurations.of(GreetingAutoConfiguration.class)`.
-
-    ApplicationContextRunner contextRunner = new ApplicationContextRunner()
++
+[source,java]
+----
+private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
     .withConfiguration(AutoConfigurations.of(GreetingAutoConfiguration.class));
+----
 
 . Write a test case named `shouldProvideStdOutGreetingServiceByDefault` which uses the `run` method of the `ApplicationContextRunner` field.
 .. Inside the lambda block of the `run` method, use AssertJ's `assertThat` on the context to call `hasSingleBean` with an `StdOutGreetingService.class` argument.
++
+[source,java]
+----
+@Test
+void shouldProvideStdOutGreetingServiceByDefault() {
+    this.contextRunner.run(context -> {
+        assertThat(context).hasSingleBean(StdOutGreetingService.class);
+    });
+}
+----
 
 . Write a test case named `shouldProvideStdOutGreetingServiceWhenPropertyIsSet` which uses the `withPropertyValues` of the `ApplicationContextRunner` field to set the property `workshop.greeting.type` to `stdout`.
 .. Inside the lambda block of the `run` method, use AssertJ's `assertThat` on the context to call `hasSingleBean` with an `StdOutGreetingService.class` argument.
++
+[source,java]
+----
+@Test
+void shouldProvideStdOutGreetingServiceWhenPropertyIsSet() {
+    this.contextRunner
+            .withPropertyValues("workshop.greeting.type=stdout")
+            .run(context -> {
+                assertThat(context).hasSingleBean(StdOutGreetingService.class);
+            });
+}
+----
 
 . Write a test case named `shouldProvideLoggerGreetingServiceWhenPropertyIsSet` which uses the `withPropertyValues` of the `ApplicationContextRunner` field to set the property `workshop.greeting.type` to `logger`.
 .. Inside the lambda block of the `run` method, use AssertJ's `assertThat` on the context to call `hasSingleBean` with an `LoggerGreetingService.class` argument.
@@ -48,9 +73,43 @@ Create unit tests to ensure that the `GreetingAutoConfiguration` works as expect
 . Write a test case named `shouldProvideBeepGreetingServiceIfSystemPropertyIsSet` which uses `withPropertyValues` of the `ApplicationContextRunner` field to set the property `workshop.greeting.type` to `none`.
 .. Additionally, it uses the `withSystemProperties` method to set `my.custom.condition` to `true`.
 .. Inside the lambda block of the `run` method, use AssertJ's `assertThat` on the context to call `hasSingleBean` with an `BeepGreetingService.class` argument.
++
+[source,java]
+----
+@Test
+void shouldProvideBeepGreetingServiceIfSystemPropertyIsSet() {
+    this.contextRunner
+            .withPropertyValues("workshop.greeting.type=none")
+            .withSystemProperties("my.custom.condition=true")
+            .run(context -> {
+                assertThat(context).hasSingleBean(BeepGreetingService.class);
+            });
+}
+----
 
 . Write a test case named `shouldBackOffIfGreetingServiceIsDefinedByUser` which uses the `withBean` method of the `ApplicationContextRunner` field to define a bean of type `GreetingService`. Create an inner static class or an anonymous class for the "user provided" `GreetingService`.
 .. Inside the lambda block of the `run` method, use AssertJ's `assertThat` on the context to call `hasSingleBean` with an `GreetingService.class` argument.
++
+[source,java]
+----
+@Test
+void shouldBackOffIfGreetingServiceIsDefinedByUser() {
+    this.contextRunner
+            .withBean(GreetingService.class, UserGreetingService::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(GreetingService.class);
+                assertThat(context).hasSingleBean(UserGreetingService.class);
+            });
+}
+
+    private static class UserGreetingService implements GreetingService {
+    @Override
+    public void greet(String name) {
+        System.out.println("UserGreetingService: Hello " + name);
+    }
+}
+----
+
 ====
 
 === Conclusion
