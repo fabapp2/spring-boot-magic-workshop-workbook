@@ -1,27 +1,34 @@
 // tag::main[]
+It's a bit unfortunate that users of your auto-configuration need a dependency on `com.workshop:library-autoconfigure` and on `com.workshop:library-stdout`.
+
 You will now package the `{auto-config}` and `{stdout}` modules into a reusable Spring Boot starter.
 
 ==== Learnings
-- **How do spring-boot-starters work**
+- **How do Spring Boot Starters work**
 
 ==== Task:
-. Use the module `{starter}`
-. Add dependencies to `{auto-config}` and `{stdout}`
-. Replace direct dependencies in the `{app}` module with the new starter
+. Add Maven dependencies to `{auto-config}` and `{stdout}` in the `{starter}` module.
+. Add a Maven dependency to `org.springframework.boot:spring-boot-starter` in the `{starter}` module.
+. Replace direct dependencies to `{auto-config}` and `{stdout}` in the `{app}` module with the new starter.
 . ✅ Confirm that the app still works as expected and prints the greeting.
 
+==== Detailed Steps
+.Detailed Steps
+[%collapsible]
+====
+TODO
+====
+
 ==== Conclusion
-🤔 Why create a starter? When is it useful in teams or public libraries?
+🤔 Why create a starter? When could that be useful?
 
 .Answer
 [%collapsible]
 ====
-- Clean separation of concerns
-- Reusability for teams or public Maven users
-- Simplifies integration (just add one dependency)
+A starter simplifies the integration of your library.
+It contains the auto-configuration and all the needed dependencies in one single dependency.
+In our case, the starter only contains two dependencies, but you can image starters for more complex scenarios, which bring dozens or more dependencies.
 ====
-
-
 
 ==== Solution
 [source,bash]
