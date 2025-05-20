@@ -60,4 +60,7 @@ You can take a look at https://start.spring.io/#!type=maven-project&language=jav
 ....
 git checkout -f main
 ....
+
+🥳 Congrats, you finished all exercises! We hope you enjoyed the learnings.
+
 // end::main[]
