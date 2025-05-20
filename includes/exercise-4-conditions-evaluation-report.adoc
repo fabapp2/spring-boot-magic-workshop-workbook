@@ -35,7 +35,7 @@ Negative matches:
    ...
 ----
 +
-This report lists all auto-configuration classes and the conditions that determined whether they were applied.
+This report lists all auto-configuration classes with their conditions, and they were applied or not.
 
 . Review the report to understand which configurations were applied and which were not, along with the reasons.
 
