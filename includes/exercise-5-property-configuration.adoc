@@ -1,50 +1,46 @@
 // tag::main[]
 
 ==== Learnings
-- **How to parametrize auto-configured beans**
-- **How to create auto-configured beans depending on properties**
+- **How to parametrize auto-configured beans** (task A)
+- **How to create auto-configured beans depending on properties** (task B)
 
-==== Task
+==== Task A
 
 . There's a `GreetingProperties` class in the `{auto-config}` module which should be filled with values from the `application.properties`.
-. Add `@ConfigurationProperties` to this class and let it bind to the `workshop.greeting` prefix.
-. The `StdOutGreetingService` and the `LoggerGreetingService` have constructors which allows you to customize the greeting. By default it's "Hola", but this should now be configurable via the `application.properties`.
-. Annotate the `GreetingAutoConfiguration` with `@EnableConfigurationProperties(GreetingProperties.class)` to enable loading the values from the `application.properties`.
-. Change the bean methods for `StdOutGreetingService` and `LoggerGreetingService` to inject `GreetingProperties` and configure the greeting prefix.
-. Add a property `workshop.greeting.text=Gude` to `application.properties`.
-. ✅ Start the application. It should now print _LoggerGreetingService: Gude Spring I/O Barcelona_ or _StdOutGreetingService: Gude Spring I/O Barcelona_.
-. Now, we want a property called `workshop.greeting.type` which controls the type of `GreetingService` created:
-- `workshop.greeting.type=logger` should create a `LoggerGreetingService` bean.
-- `workshop.greeting.type=stdout` should create a `StdOutGreetingService` bean.
-. You can use `@ConditionalOnProperty` for that. Annotate both bean methods with `@ConditionalOnProperty` and set the annotation attributes accordingly.
-. Add `workshop.greeting.type=stdout` to your `application.properties`
-. ✅ Start the application. It should now print _StdOutGreetingService: Gude Spring I/O Barcelona_.
-. Change `workshop.greeting.type` to `logger`.
-. ✅ Start the application. It should now print _LoggerGreetingService: Gude Spring I/O Barcelona_.
-. Remove the `workshop.greeting.type` from `application.properties`
-. 🤔 Start the application. It now fails. Why is that?
-. Change the annotation attributes from `@ConditionalOnProperty` on the `StdOutGreetingService` to also match if the property is missing.
-. ✅ Start the application. It should now print _StdOutGreetingService: Gude Spring I/O Barcelona_.
 
-==== Detailed Steps
+. Annotate the `GreetingAutoConfiguration` with `@EnableConfigurationProperties(GreetingProperties.class)` to enable loading the values from the `application.properties`.
+
+. Annotate `GreetingProperties` with `@ConfigurationProperties` and bind it to the `workshop.greeting` prefix.
+
+. The `StdOutGreetingService` and the `LoggerGreetingService` have constructors which allows you to customize the greeting. By default, it's "Hola", but this should now be configurable via the `application.properties` by setting `workshop.greeting.text`.
+
+. Change the bean methods for `StdOutGreetingService` and `LoggerGreetingService` to inject `GreetingProperties` and configure the greeting prefix.
+
+. Add a property `workshop.greeting.text=Gude` to `application.properties`.
+
+. ✅ Start the application. It should now print _LoggerGreetingService: Gude SpringIO Barcelona_ or _StdOutGreetingService: Gude SpringIO Barcelona_.
+
+
+==== Detailed Steps A
 
 
 .Detailed Steps
 [%collapsible]
 ====
 
-. In the `{auto-config}` module, open the `GreetingProperties` class and annotate it with:
-+
-[source,java]
-----
-@ConfigurationProperties(prefix = "workshop.greeting")
-----
 
-. In the same module, annotate `GreetingAutoConfiguration` with:
+. In the `{auto-config}` annotate `GreetingAutoConfiguration` with:
 +
 [source,java]
 ----
 @EnableConfigurationProperties(GreetingProperties.class)
+----
+
+. In the same module open the `GreetingProperties` class and annotate it with:
++
+[source,java]
+----
+@ConfigurationProperties(prefix = "workshop.greeting")
 ----
 
 . In `GreetingAutoConfiguration`, inject `GreetingProperties` into both `GreetingService` bean methods:
@@ -55,7 +51,7 @@ GreetingService stdOutGreetingService(GreetingProperties properties)
 
 GreetingService slf4jGreetingService(GreetingProperties properties)
 ----
-+
+
 
 . Replace the constructor calls with:
 +
@@ -75,7 +71,44 @@ workshop.greeting.text=Gude
 
 . Run the application
 
-. ✅ You should see _LoggerGreetingService: Gude Spring I/O Barcelona_ or _StdOutGreetingService: Gude SpringI/O Barcelona_.
+. ✅ You should see _LoggerGreetingService: Gude SpringIO Barcelona_ or _StdOutGreetingService: Gude SpringIO Barcelona_ now.
+
+
+====
+
+
+==== Task B
+
+. Now, we want a property called `workshop.greeting.type` which controls the type of `GreetingService` that will be used:
+
+- `workshop.greeting.type=logger` should create a `LoggerGreetingService` bean.
+
+- `workshop.greeting.type=stdout` should create a `StdOutGreetingService` bean.
+
+. You can use `@ConditionalOnProperty` for that. Annotate both bean methods with `@ConditionalOnProperty` and set the annotation attributes accordingly.
+
+. Add `workshop.greeting.type=stdout` to your `application.properties`
+
+. ✅ Start the application. It should now print _StdOutGreetingService: Gude SpringIO Barcelona_.
+
+. Change `workshop.greeting.type` to `logger`.
+
+. ✅ Start the application. It should now print _LoggerGreetingService: Gude SpringIO Barcelona_.
+
+. Remove the `workshop.greeting.type` from `application.properties`
+
+. 🤔 Start the application. It now fails. Why is that?
+
+. Change the annotation attributes from `@ConditionalOnProperty` on the `StdOutGreetingService` to also match if the property is missing.
+
+. ✅ Start the application. It should now print _StdOutGreetingService: Gude SpringIO Barcelona_.
+
+==== Detailed Steps
+
+
+.Detailed Steps
+[%collapsible]
+====
 
 . Annotate the `StdOutGreetingService` bean method with:
 +
@@ -100,7 +133,7 @@ workshop.greeting.type=stdout
 
 . Run the application.
 
-. ✅ You should see: _StdOutGreetingService: Gude Spring I/O Barcelona_
+. ✅ You should see: _StdOutGreetingService: Gude SpringIO Barcelona_
 
 . In `application.properties` set the following:
 +
@@ -111,7 +144,7 @@ workshop.greeting.type=logger
 
 . Run the application.
 
-. ✅ You should see: _LoggerGreetingService: Gude Spring I/O Barcelona_
+. ✅ You should see: _LoggerGreetingService: Gude SpringIO Barcelona_
 +
 TIP: The `LoggerGreetingService` bean will only be created if `library-slf4j` is on the classpath. If not, even `type=logger` will not work.
 
@@ -128,7 +161,7 @@ TIP: The `LoggerGreetingService` bean will only be created if `library-slf4j` is
 
 . Run the application.
 
-. ✅ You should see: _StdOutGreetingService: Gude Spring I/O Barcelona_
+. ✅ You should see: _StdOutGreetingService: Gude SpringIO Barcelona_
 ====
 
 ==== Conclusion
