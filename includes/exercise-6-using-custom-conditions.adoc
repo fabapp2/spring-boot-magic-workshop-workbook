@@ -14,21 +14,21 @@ Oh, the possibilities!
 
 ==== Task
 
-* Create a new annotation `@MyCustomCondition`. It must have a `@Target` of `TYPE` and `METHOD` and a `@Retention` of `RUNTIME` (you can also copy that from Spring Boot's `@ConditionalOnProperty`).
+. Create a new annotation `@MyCustomCondition`. It must have a `@Target` of `TYPE` and `METHOD` and a `@Retention` of `RUNTIME` (you can also copy that from Spring Boot's `@ConditionalOnProperty`).
 
-* The newly created annotation must be annotated with `@Conditional({OnCustomCondition.class})`.
+. The newly created annotation must be annotated with `@Conditional({OnCustomCondition.class})`.
 
-* A new class, `OnCustomCondition` must be created. It should extend Spring Boot's `SpringBootCondition`.
+. A new class, `OnCustomCondition` must be created. It should extend Spring Boot's `SpringBootCondition`.
 
-* The `getMatchOutcome` method must be overriden and should check the `my.custom.condition` system property. Use `ConditionOutcome.match` and `ConditionOutcome.noMatch` to signal if the condition matches or not.
+. The `getMatchOutcome` method must be overriden and should check the `my.custom.condition` system property. Use `ConditionOutcome.match` and `ConditionOutcome.noMatch` to signal if the condition matches or not.
 
-* Modify the `GreetingAutoConfiguration` to use the new `@MyCustomCondition`. A bean of class `BeepGreetingService` should be created if `@MyCustomCondition` matches.
+. Modify the `GreetingAutoConfiguration` to use the new `@MyCustomCondition`. A bean of class `BeepGreetingService` should be created if `@MyCustomCondition` matches.
 
-* Test that the application works by setting the system property `my.custom.condition` and verify that the `BeepGreetingService` bean is used.
-
+. Test that the application works by setting the system property `my.custom.condition` and verify that the `BeepGreetingService` bean is used.
++
 NOTE: You'll have to set `workshop.greeting.type` to something else than `logger` or `stdout`, because otherwise the `LoggerGreetingService` or `StdOutGreetingService` is also created.
 
-🤔 Also take a look at the conditions evaluation report. Do you see your condition in there?
+. 🤔 Also take a look at the conditions evaluation report. Do you see your condition in there?
 
 ==== Detailed Steps
 
@@ -36,26 +36,26 @@ NOTE: You'll have to set `workshop.greeting.type` to something else than `logger
 [%collapsible]
 ====
 
-* Create a new annotation in the `{auto-config}` module, called `MyCustomCondition`
+. Create a new annotation in the `{auto-config}` module, called `MyCustomCondition`
 
-* Annotate the annotation with `@Target({ElementType.TYPE, ElementType.METHOD})` and with `@Retention(RetentionPolicy.RUNTIME)`
+. Annotate the annotation with `@Target({ElementType.TYPE, ElementType.METHOD})` and with `@Retention(RetentionPolicy.RUNTIME)`
 
-* Annotate the annotation with `@Conditional({OnCustomCondition.class})`
+. Annotate the annotation with `@Conditional({OnCustomCondition.class})`
 
-* Create a class called `OnCustomCondition` and let it extend `SpringBootCondition`
+. Create a class called `OnCustomCondition` and let it extend `SpringBootCondition`
 
-* Implement the `getMatchOutcome` method
-** Use `System.getProperty("my.custom.condition")` to read the `my.custom.condition` system property
-** If the value of that property is `true`, return `ConditionOutcome.match` to signal that the condition matches
-** Otherwise, return `ConditionOutcome.noMatch` to signal that the condition didn't match
+. Implement the `getMatchOutcome` method
+..  Use `System.getProperty("my.custom.condition")` to read the `my.custom.condition` system property
+..  If the value of that property is `true`, return `ConditionOutcome.match` to signal that the condition matches
+..  Otherwise, return `ConditionOutcome.noMatch` to signal that the condition didn't match
 
-* Add a new `@Bean` method to the `GreetingAutoConfiguration` class, call it `beepGreetingService`, its return type is `GreetingService`
-** Annotate this new method with `@MyCustomCondition`, `@ConditionalOnMissingBean` and `@ConditionalOnClass(BeepGreetingService.class)`
-** Return a new instance of `BeepGreetingService` from that method
+. Add a new `@Bean` method to the `GreetingAutoConfiguration` class, call it `beepGreetingService`, its return type is `GreetingService`
+..  Annotate this new method with `@MyCustomCondition`, `@ConditionalOnMissingBean` and `@ConditionalOnClass(BeepGreetingService.class)`
+..  Return a new instance of `BeepGreetingService` from that method
 
-* To test the custom condition, you can add `System.setProperty("my.custom.condition", "true");` as first line in the `main` method, or you can set the system properties when starting with your IDE
+. To test the custom condition, you can add `System.setProperty("my.custom.condition", "true");` as first line in the `main` method, or you can set the system properties when starting with your IDE
 
-* You'll also need to add `workshop.greeting.type=none` to your `application.properties`, because otherwise the `LoggerGreetingService` or the `StdOutGreetingService` would be created
+. You'll also need to add `workshop.greeting.type=none` to your `application.properties`, because otherwise the `LoggerGreetingService` or the `StdOutGreetingService` would be created
 ====
 
 ==== Conclusion
