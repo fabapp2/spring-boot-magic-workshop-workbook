@@ -25,11 +25,11 @@ This pattern mimics common practices in Spring Boot where auto-configured beans 
 
 . In the `{app}` module, add a Maven dependency to `{slf4j}`.
 
-. ✅ Start the app: You should see _LoggerGreetingService: Hola SpringIO Barcelona_.
+. ✅ Start the app: You should see _LoggerGreetingService: Hola Spring I/O Barcelona_.
 
 . Remove the `{slf4j}` Maven dependency again:
 
-. ✅ Start the app: You should now see _StdOutGreetingService: Hola SpringIO Barcelona_.
+. ✅ Start the app: You should now see _StdOutGreetingService: Hola Spring I/O Barcelona_.
 
 ==== Detailed Steps
 

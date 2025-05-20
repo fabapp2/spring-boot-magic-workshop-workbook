@@ -10,7 +10,7 @@
 :doctype: article
 :toc:
 
-Workshop @ SpringIO 2025 - Moritz Halbritter & Fabian Krüger
+Workshop @ Spring I/O 2025 - Moritz Halbritter & Fabian Krüger
 
 == Getting Started
 include::includes/getting-started.adoc[tag=main]
