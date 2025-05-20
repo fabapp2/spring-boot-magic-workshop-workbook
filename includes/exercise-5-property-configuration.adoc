@@ -87,6 +87,8 @@ workshop.greeting.text=Gude
 
 . You can use `@ConditionalOnProperty` for that. Annotate both bean methods with `@ConditionalOnProperty` and set the annotation attributes accordingly.
 
+. Remove the `@ConditionalOnMissingClass` from the `StdOutGreetingService` bean method.
+
 . Add `workshop.greeting.type=stdout` to your `application.properties`
 
 . ✅ Start the application. It should now print _StdOutGreetingService: Gude Spring I/0 Barcelona_.
