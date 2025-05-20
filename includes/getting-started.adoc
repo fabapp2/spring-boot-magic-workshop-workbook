@@ -8,4 +8,6 @@ git clone https://github.com/fabapp2/spring-boot-magic-workshop.git
 cd spring-boot-magic-workshop
 git checkout exercise-1
 ....
+
+TIP: Remember to reload your workspace after adding dependencies to make your IDE aware of the new types.
 // end::main[]
