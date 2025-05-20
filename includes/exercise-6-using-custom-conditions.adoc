@@ -14,7 +14,7 @@ Oh, the possibilities!
 
 === Task
 
-. Create a new annotation `@MyCustomCondition`. It must have a `@Target` of `TYPE` and `METHOD` and a `@Retention` of `RUNTIME` (you can also copy that from Spring Boot's `@ConditionalOnProperty`).
+. Create a new annotation `@MyCustomCondition` in the `{auto-config}` module. It must have a `@Target` of `TYPE` and `METHOD` and a `@Retention` of `RUNTIME` (you can also copy that from Spring Boot's `@ConditionalOnProperty`).
 
 . The newly created annotation must be annotated with `@Conditional({OnCustomCondition.class})`.
 
@@ -22,7 +22,7 @@ Oh, the possibilities!
 
 . The `getMatchOutcome` method must be overriden and should check the `my.custom.condition` system property. Use `ConditionOutcome.match` and `ConditionOutcome.noMatch` to signal if the condition matches or not.
 
-. Modify the `GreetingAutoConfiguration` to use the new `@MyCustomCondition`. A bean of class `BeepGreetingService` should be created if `@MyCustomCondition` matches.
+. Modify the `GreetingAutoConfiguration` to use the new `@MyCustomCondition`. A bean of class `BeepGreetingService` (located in the `{slf4j}` module) should be created if `@MyCustomCondition` matches.
 
 . Test that the application works by setting the system property `my.custom.condition` and verify that the `BeepGreetingService` bean is used.
 +
