@@ -38,7 +38,7 @@ This pattern mimics common practices in Spring Boot where auto-configured beans 
 [%collapsible]
 ====
 
-. Make sure the `{auto-config}` module declares a dependency to `{slf4j}` with:
+. In the `{auto-config}` module add a dependency to `{slf4j}` with:
 
     <dependency>
         <groupId>com.workshop</groupId>
