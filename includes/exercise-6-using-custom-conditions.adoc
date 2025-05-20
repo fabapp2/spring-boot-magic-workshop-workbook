@@ -37,13 +37,19 @@ NOTE: You'll have to set `workshop.greeting.type` to something else than `logger
 ====
 
 . Create a new annotation in the `{auto-config}` module, called `MyCustomCondition`
-+
-    public @interface MyCustomCondition {
-    }
 
 . Annotate the annotation with `@Target({ElementType.TYPE, ElementType.METHOD})` and with `@Retention(RetentionPolicy.RUNTIME)`
 
 . Annotate the annotation with `@Conditional({OnCustomCondition.class})`
++
+[source,java]
+----
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Conditional({OnCustomCondition.class})
+@interface MyCustomCondition {
+}
+----
 
 . Create a class called `OnCustomCondition` and let it extend `SpringBootCondition`
 
@@ -51,10 +57,38 @@ NOTE: You'll have to set `workshop.greeting.type` to something else than `logger
 ..  Use `System.getProperty("my.custom.condition")` to read the `my.custom.condition` system property
 ..  If the value of that property is `true`, return `ConditionOutcome.match` to signal that the condition matches
 ..  Otherwise, return `ConditionOutcome.noMatch` to signal that the condition didn't match
++
+[source,java]
+----
+class OnCustomCondition extends SpringBootCondition {
+    @Override
+    public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
+        String value = System.getProperty("my.custom.condition");
+        if (value == null) {
+            return ConditionOutcome.noMatch("No 'my.custom.condition' system property found");
+        }
+        if (value.toLowerCase(Locale.ROOT).equals("true")) {
+            return ConditionOutcome.match("'my.custom.condition' system property is true");
+        }
+        return ConditionOutcome.noMatch("'my.custom.condition' system property is '%s'".formatted(value));
+    }
+}
+----
 
 . Add a new `@Bean` method to the `GreetingAutoConfiguration` class, call it `beepGreetingService`, its return type is `GreetingService`
 ..  Annotate this new method with `@MyCustomCondition`, `@ConditionalOnMissingBean` and `@ConditionalOnClass(BeepGreetingService.class)`
 ..  Return a new instance of `BeepGreetingService` from that method
++
+[source,java]
+----
+@Bean
+@ConditionalOnMissingBean
+@MyCustomCondition
+@ConditionalOnClass(BeepGreetingService.class)
+GreetingService beepGreetingService(GreetingProperties properties) {
+    return new BeepGreetingService(properties.getPrefix());
+}
+----
 
 . To test the custom condition, you can add `System.setProperty("my.custom.condition", "true");` as first line in the `main` method, or you can set the system properties when starting with your IDE
 
