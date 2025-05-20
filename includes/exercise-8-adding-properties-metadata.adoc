@@ -9,15 +9,15 @@ Use the Spring Boot configuration processor to generate metadata for your config
 
 . Run a build and inspect the `components/{auto-config}/target/classes/META-INF/spring-configuration-metadata.json` file
 
-🤔 Think about why that file could be useful
+. 🤔 Think about why that file could be useful
 
 . The `text` property in `GreetingProperties`  should be renamed to `prefix`, while deprecating the `text` property. Use `@Deprecated` and `@DeprecatedConfigurationProperty` annotations to achieve this
 
 . Run a build and inspect the file `spring-configuration-metadata.json` again
 
-🤔 What has changed? Why could that be useful?
+. 🤔 What has changed? Why could that be useful?
 
-🤔 Open the `application.properties` in your IDE. Do you notice something?
+. 🤔 Open the `application.properties` in your IDE. Do you notice something?
 
 . Add `org.springframework.boot:spring-boot-properties-migrator` to your app
 
