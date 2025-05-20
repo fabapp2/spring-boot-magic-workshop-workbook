@@ -1,5 +1,5 @@
 // tag::main[]
-_Estimated time:  ~TODO-MH Min._
+_Estimated time:  ~10 Min._
 
 Create unit tests to ensure that the `GreetingAutoConfiguration` works as expected.
 
