@@ -13,7 +13,7 @@ Make the `StdOutGreetingService` from `{stdout}` available as an auto-configured
 
 . Add a Maven dependency to `org.springframework.boot:spring-boot-autoconfigure` which brings the `@AutoConfiguration` annotation.
 
-. Add a Maven dependency to other required modules. Make them optional which is a best-practice for auto-configurations.
+. Add a Maven dependency to other required modules (`-api` and `-stdout`). Make them optional which is a best-practice for auto-configurations.
 
 . Annotate the `GreetingAutoConfiguration` with `@AutoConfiguration`.
 
