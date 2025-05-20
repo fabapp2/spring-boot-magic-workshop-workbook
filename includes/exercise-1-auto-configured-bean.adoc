@@ -22,7 +22,7 @@ Make the `StdOutGreetingService` from `{stdout}` available as an auto-configured
 
 . Auto-configuration classes must be declared in a classpath resource file named `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`. This file contains fully qualified names of the auto-configuration so that Spring Boot can find them.
 
-. Add the Maven dependency `{auto-config}` to `{app}`, making the auto-configured `GreetingService` available.
+. Add the Maven dependency `{auto-config}` and `{stdout}` to `{app}`, making the auto-configured `GreetingService` available.
 
 . 🤔 Starting the application should fail. Why is that?
 
