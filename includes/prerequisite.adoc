@@ -1,5 +1,4 @@
 // tag::main[]
-_Estimated time: 5 Min._
 
 Start the application in `app` and understand how modules are wired.
 // end::main[]
