@@ -11,7 +11,7 @@ This pattern mimics common practices in Spring Boot where auto-configured beans 
 
 === Task
 
-. In the `{auto-config}` module add a optiónal dependency to `{slf4j}`.
+. In the `{auto-config}` module add a optional dependency to `{slf4j}`.
 
 . In the `GreetingAutoConfiguration`, register an additional `GreetingService` bean that returns a `LoggerGreetingService` instance.
 
