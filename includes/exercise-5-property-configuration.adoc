@@ -1,5 +1,4 @@
 // tag::main[]
-_Estimated Time: ~10Min._
 
 ==== Learnings
 - **How to parametrize auto-configured beans**

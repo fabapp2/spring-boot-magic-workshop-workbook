@@ -1,5 +1,4 @@
 // tag::main[]
-_Estimated time:  ~TODO Min._
 
 It is also possible to create custom conditions like the existing `@On...` conditions from Spring Boot.
 

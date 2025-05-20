@@ -1,5 +1,4 @@
 // tag::main[]
-_Estimated time:  ~10 Min._
 
 Make the `StdOutGreetingService` from `{stdout}` available as an auto-configured Spring bean for applications that rely on `GreetingService`.
 

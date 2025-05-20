@@ -1,5 +1,4 @@
 // tag::main[]
-_Estimated time: ~10–15 Min._
 
 In this exercise, you will make the existing `LoggerGreetingService` available as an auto-configured bean — but only when the corresponding class is on the classpath. You will also adjust the fallback behavior of `StdOutGreetingService` so it is only used when the SLF4J-based implementation is not present.
 

@@ -1,5 +1,4 @@
 // tag::main[]
-_Estimated time: ~5 Min._
 
 In this exercise, you'll learn how to leverage Spring Boot's Conditions Evaluation Report to understand why certain auto-configurations are applied or not. This is especially useful when troubleshooting unexpected behavior in your application.
 
