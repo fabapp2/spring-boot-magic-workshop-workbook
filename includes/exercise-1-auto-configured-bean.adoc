@@ -53,9 +53,17 @@ NOTE: Auto-configurations must be loaded only by being named in the imports file
 
 . Add the fully qualified classname of the `GreetingAutoConfiguration` class to the `.imports` file.
 
-. Create a new `GreetingService` bean in `GreetingAutoConfiguration` that returns a new instance of `StdOutGreetingService`. Using the default constructor initializes it with _"Hola"_ as greeting.
-
 . Annotate the `GreetingAutoConfiguration` with `@AutoConfiguration`.
+
+. Create a new `GreetingService` bean in `GreetingAutoConfiguration` that returns a new instance of `StdOutGreetingService`. Using the default constructor initializes it with _"Hola"_ as greeting:
++
+[source,java]
+----
+@Bean
+GreetingService stdOutGreetingService() {
+    return new StdOutGreetingService();
+}
+----
 
 . Add a Maven dependency to `com.workshop:library-autoconfigure` in the `{app}` module.
 
