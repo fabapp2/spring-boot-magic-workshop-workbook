@@ -4,15 +4,15 @@ Create unit tests to ensure that the `GreetingAutoConfiguration` works as expect
 
 === Task
 
-. A test class for the `GreetingAutoConfiguration` class must be created.
+. A dependency on `org.springframework.boot:spring-boot-starter-test` with scope `test` has to be added in the `auto-config` module.
 
-. A dependency on `org.springframework.boot:spring-boot-starter-test` has to be added in the `auto-config` module.
+. A test class for the `GreetingAutoConfiguration` class must be created.
 
 . Spring Boot's `ApplicationContextRunner` should be used to test the auto-configuration (https://docs.spring.io/spring-boot/3.3/reference/features/developing-auto-configuration.html#features.developing-auto-configuration.testing[see the reference documentation]).
 
 . AssertJ assertions should be used to verify that the context contains a `StdOutGreetingService` bean if no property is set.
 
-. Implement tests for these aspects:
+. Implement tests for these use cases:
 
 .. The context contains a `StdOutGreetingService` bean if the property `workshop.greeting.type` is set to `stdout`.
 
