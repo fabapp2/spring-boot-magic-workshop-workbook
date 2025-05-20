@@ -33,6 +33,9 @@ Create unit tests to ensure that the `GreetingAutoConfiguration` works as expect
 
 . Create a field of type `ApplicationContextRunner`, and use the fluent API to call `withConfiguration` with `AutoConfigurations.of(GreetingAutoConfiguration.class)`.
 
+    ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+    .withConfiguration(AutoConfigurations.of(GreetingAutoConfiguration.class));
+
 . Write a test case named `shouldProvideStdOutGreetingServiceByDefault` which uses the `run` method of the `ApplicationContextRunner` field.
 .. Inside the lambda block of the `run` method, use AssertJ's `assertThat` on the context to call `hasSingleBean` with an `StdOutGreetingService.class` argument.
 
