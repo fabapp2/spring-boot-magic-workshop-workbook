@@ -55,7 +55,7 @@ NOTE: Auto-configurations must be loaded only by being named in the imports file
 
 . Annotate the `GreetingAutoConfiguration` with `@AutoConfiguration`.
 
-. Create a new `GreetingService` bean in `GreetingAutoConfiguration` that returns a new instance of `StdOutGreetingService`. Using the default constructor initializes it with _"Hola"_ as greeting:
+. Create a new `GreetingService` bean in `GreetingAutoConfiguration` that returns a new instance of `StdOutGreetingService`.
 +
 [source,java]
 ----
