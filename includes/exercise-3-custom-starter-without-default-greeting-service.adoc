@@ -12,24 +12,24 @@ This pattern mimics common practices in Spring Boot where auto-configured beans 
 
 ==== Task
 
-. In `GreetingAutoConfiguration`, register an additional `GreetingService` bean that returns a `LoggerGreetingService`.
+. In the `GreetingAutoConfiguration`, register an additional `GreetingService` bean that returns a `LoggerGreetingService` instance.
 
 . Annotate this method with:
-- `@ConditionalOnClass(LoggerGreetingService.class)` — loads only when available
-- `@ConditionalOnMissingBean` — to allow overriding by users
+- `@ConditionalOnClass(LoggerGreetingService.class)` — to create a bean only if `LoggerGreetingService` is on the classpath.
+- `@ConditionalOnMissingBean` — to allow overriding by users.
 
 . Update the existing `StdOutGreetingService` bean:
-- Add `@ConditionalOnMissingClass("com.workshop.magic.service.slf4j.LoggerGreetingService")` — fallback only if SLF4J is not available
+- Add `@ConditionalOnMissingClass("com.workshop.magic.service.slf4j.LoggerGreetingService")` — to create the bean only if `LoggerGreetingService` is not on the classpath.
 
-. Ensure the module `{slf4j}` is **not included** in `{starter}`.
+. Ensure the module `{slf4j}` is **not** included in the `{starter}` module.
 
-. In the `{app}` module, replace the individual module dependencies with:
-- `library-spring-boot-starter`
-- `library-slf4j`
+. In the `{app}` module, add a Maven dependency to `{slf4j}`.
 
-✅ Start the app: You should see `LoggerGreetingService: Hola SpringIO Barcelona`.
+. ✅ Start the app: You should see _LoggerGreetingService: Hola SpringIO Barcelona_.
 
-✅ Remove the `library-slf4j` dependency: You should now see `StdOutGreetingService`.
+. Remove the `{slf4j}` Maven dependency again:
+
+. ✅ Start the app: You should now see _StdOutGreetingService: Hola SpringIO Barcelona_.
 
 ==== Detailed Steps
 
@@ -37,7 +37,7 @@ This pattern mimics common practices in Spring Boot where auto-configured beans 
 [%collapsible]
 ====
 
-. In `GreetingAutoConfiguration.java`, add this bean method:
+. In the `GreetingAutoConfiguration` class, add this bean method:
 
     @Bean
     @ConditionalOnMissingBean
@@ -46,11 +46,11 @@ This pattern mimics common practices in Spring Boot where auto-configured beans 
         return new LoggerGreetingService();
     }
 
-. In the existing `stdOutGreetingService()` method, add:
+. On the existing `stdOutGreetingService()` method, add:
 
     @ConditionalOnMissingClass("com.workshop.magic.service.slf4j.LoggerGreetingService")
 
-. Make sure the {auto-config} module declares the dependency to {slf4j} with:
+. Make sure the `{auto-config}` module declares a dependency to `{slf4j}` with:
 
     <dependency>
         <groupId>com.workshop</groupId>
@@ -58,7 +58,7 @@ This pattern mimics common practices in Spring Boot where auto-configured beans 
         <optional>true</optional>
     </dependency>
 
-. In the {starter} module (library-spring-boot-starter), ensure {slf4j} is not added as a dependency. Only {api}, {stdout}, and {auto-config} should be included.
+. In the `{starter}` module, ensure `{slf4j}` is **not** added as a dependency. Only `{api}` (not necessarily needed, as it comes transitively through `{stdout}`), `{stdout}`, and `{auto-config}` should be included.
 
     <dependency>
         <groupId>com.workshop</groupId>
@@ -72,45 +72,44 @@ This pattern mimics common practices in Spring Boot where auto-configured beans 
         <groupId>com.workshop</groupId>
         <artifactId>library-stdout</artifactId>
     </dependency>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter</artifactId>
-    </dependency>
 
-    With:
+. Make sure the `{app}` module declares a dependency to `{slf4j}` with:
 
-    <dependency>
-        <groupId>com.workshop</groupId>
-        <artifactId>library-spring-boot-starter</artifactId>
-    </dependency>
     <dependency>
         <groupId>com.workshop</groupId>
         <artifactId>library-slf4j</artifactId>
     </dependency>
 
-. Run the application.
+. Run the application. `LoggerGreetingService` is now used, as it's on the classpath. The `StdOutGreetingService` bean isn't created, as `LoggerGreetingService` is on the classpath.
 
-. ✅ You should see LoggerGreetingService output.
+. Remove the `{slf4j}` dependency from the app module and re-run it.
 
-. Remove the library-slf4j dependency from the app and rerun.
-
-. ✅ You should see fallback to StdOutGreetingService.
+. `StdOutGreetingService` is now used, as `LoggerGreetingService` is not on the classpath.
 ====
 
 ==== Conclusion
 
-This pattern of classpath-based behavior is common in real-world Spring Boot libraries. It allows default behavior that can be overridden simply by adding another dependency — without requiring configuration or code changes.
+This pattern of classpath-based behavior is common in real-world Spring Boot libraries. It allows default behavior that can be changed or enhanced by simply adding another dependency — without requiring configuration or code changes.
+
+🤔 Can you think of an example where it is done this way?
 
 .Answer
 [%collapsible]
+====
+Spring Boot uses classpath detection extensively to toggle features.
+For example, if Hibernate is on the classpath, JPA support is auto-configured.
+If it isn't, Spring Boot silently skips it.
+This reduces configuration overhead and provides smart defaults that adapt to the environment.
 
-Spring Boot uses classpath detection extensively to toggle features. For example, if Hibernate is on the classpath, JPA support is auto-configured. If it isn't, Spring Boot silently skips it. This reduces configuration overhead and provides smart defaults that adapt to the environment.
+The `spring-boot-starter-data-jpa` starter doesn't include a database driver, because the Spring Boot team doesn't want to force a database choice on you.
+You'll need to add one for yourself, for example adding `org.postgresql:postgresql` auto-configures a `DataSource` which can talk to PostgreSQL.
+====
 
 ==== Solution
 [source,bash]
-….
+....
 git checkout -f exercise-4
-….
+....
 
 🥳 Superb, let's move on to the next exercise
 // end::main[]
