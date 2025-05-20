@@ -2,7 +2,7 @@
 
 Use the Spring Boot configuration processor to generate metadata for your configuration properties.
 
-==== Task
+=== Task
 
 . Add the `org.springframework.boot:spring-boot-configuration-processor` to your project
 
@@ -22,7 +22,7 @@ Use the Spring Boot configuration processor to generate metadata for your config
 
 . Start the app and observe the console output
 
-==== Conclusion
+=== Conclusion
 
 Why is providing that netadata file beneficial? Who would use it?
 
@@ -54,7 +54,7 @@ You can take a look at https://start.spring.io/#!type=maven-project&language=jav
 
 ====
 
-==== Solution
+=== Solution
 [source,bash]
 ....
 git checkout -f main

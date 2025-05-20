@@ -2,11 +2,11 @@
 
 In this exercise, you'll learn how to leverage Spring Boot's Conditions Evaluation Report to understand why certain auto-configurations are applied or not. This is especially useful when troubleshooting unexpected behavior in your application.
 
-==== Learnings
+=== Learnings
 - **How to enable and interpret the Conditions Evaluation Report**
 - **How to identify why certain beans are or aren't loaded**
 
-==== Task
+=== Task
 
 . Enable debug mode in your application to view the Conditions Evaluation Report:
 +
@@ -40,11 +40,11 @@ This report lists all auto-configuration classes with their conditions, and they
 
 . Use this information to troubleshoot any unexpected behavior or to verify that your custom configurations are being considered appropriately.
 
-==== Conclusion
+=== Conclusion
 
 The Conditions Evaluation Report is a powerful tool for diagnosing configuration issues in Spring Boot applications. By understanding which conditions are met or not, you can gain insights into the auto-configuration process and ensure your application behaves as expected.
 
-==== Solution
+=== Solution
 [source,bash]
 ....
 git checkout -f exercise-5

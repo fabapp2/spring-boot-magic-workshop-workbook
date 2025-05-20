@@ -4,12 +4,12 @@ In this exercise, you will make the existing `LoggerGreetingService` available a
 
 This pattern mimics common practices in Spring Boot where auto-configured beans adapt to the available classpath.
 
-==== Learnings
+=== Learnings
 - **How to auto-configure beans conditionally based on classpath presence**
 - **How to combine `@ConditionalOnClass` and `@ConditionalOnMissingClass`**
 - **How to selectively expose features outside the default starter**
 
-==== Task
+=== Task
 
 . In the `GreetingAutoConfiguration`, register an additional `GreetingService` bean that returns a `LoggerGreetingService` instance.
 
@@ -30,7 +30,7 @@ This pattern mimics common practices in Spring Boot where auto-configured beans 
 
 . ✅ Start the app: You should now see _StdOutGreetingService: Hola Spring I/O Barcelona_.
 
-==== Detailed Steps
+=== Detailed Steps
 
 .Detailed Steps
 [%collapsible]
@@ -86,7 +86,7 @@ This pattern mimics common practices in Spring Boot where auto-configured beans 
 . `StdOutGreetingService` is now used, as `LoggerGreetingService` is not on the classpath.
 ====
 
-==== Conclusion
+=== Conclusion
 
 This pattern of classpath-based behavior is common in real-world Spring Boot libraries. It allows default behavior that can be changed or enhanced by simply adding another dependency — without requiring configuration or code changes.
 
@@ -104,7 +104,7 @@ The `spring-boot-starter-data-jpa` starter doesn't include a database driver, be
 You'll need to add one for yourself, for example adding `org.postgresql:postgresql` auto-configures a `DataSource` which can talk to PostgreSQL.
 ====
 
-==== Solution
+=== Solution
 [source,bash]
 ....
 git checkout -f exercise-4

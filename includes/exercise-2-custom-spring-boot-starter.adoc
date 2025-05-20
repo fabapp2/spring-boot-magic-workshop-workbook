@@ -3,16 +3,16 @@ It's a bit unfortunate that users of your auto-configuration need a dependency o
 
 You will now package the `{auto-config}` and `{stdout}` modules into a reusable Spring Boot starter.
 
-==== Learnings
+=== Learnings
 - **How do Spring Boot Starters work**
 
-==== Task:
+=== Task:
 . Add Maven dependencies to `{auto-config}` and `{stdout}` in the `{starter}` module.
 . Add a Maven dependency to `org.springframework.boot:spring-boot-starter` in the `{starter}` module.
 . Replace direct dependencies to `{auto-config}` and `{stdout}` in the `{app}` module with the new starter.
 . ✅ Confirm that the app still works as expected and prints the greeting.
 
-==== Conclusion
+=== Conclusion
 🤔 Why create a starter? When could that be useful?
 
 .Answer
@@ -23,7 +23,7 @@ It contains the auto-configuration and all the needed dependencies in one single
 In our case, the starter only contains two dependencies, but you can image starters for more complex scenarios, which bring dozens or more dependencies.
 ====
 
-==== Solution
+=== Solution
 [source,bash]
 ....
 git checkout -f exercise-3

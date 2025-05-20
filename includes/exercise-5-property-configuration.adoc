@@ -1,10 +1,10 @@
 // tag::main[]
 
-==== Learnings
+=== Learnings
 - **How to parametrize auto-configured beans** (task A)
 - **How to create auto-configured beans depending on properties** (task B)
 
-==== Task A
+=== Task A
 
 . There's a `GreetingProperties` class in the `{auto-config}` module which should be filled with values from the `application.properties`.
 
@@ -21,7 +21,7 @@
 . ✅ Start the application. It should now print _LoggerGreetingService: Gude SpringIO Barcelona_ or _StdOutGreetingService: Gude SpringIO Barcelona_.
 
 
-==== Detailed Steps A
+=== Detailed Steps A
 
 
 .Detailed Steps
@@ -77,7 +77,7 @@ workshop.greeting.text=Gude
 ====
 
 
-==== Task B
+=== Task B
 
 . Now, we want a property called `workshop.greeting.type` which controls the type of `GreetingService` that will be used:
 
@@ -103,7 +103,7 @@ workshop.greeting.text=Gude
 
 . ✅ Start the application. It should now print _StdOutGreetingService: Gude SpringIO Barcelona_.
 
-==== Detailed Steps
+=== Detailed Steps
 
 
 .Detailed Steps
@@ -164,7 +164,7 @@ TIP: The `LoggerGreetingService` bean will only be created if `library-slf4j` is
 . ✅ You should see: _StdOutGreetingService: Gude SpringIO Barcelona_
 ====
 
-==== Conclusion
+=== Conclusion
 
 In this exercise, you learned how to read properties from `application.properties` and use the values to configure your beans.
 This can be used to configure beans, or it can also be used to influence which beans are created at all.
@@ -184,7 +184,7 @@ An example in Spring Boot would be the `management.server.port` property. If set
 A lot of beans are created in the background to make that happen, all controlled by a single user-visible property.
 ====
 
-==== Solution
+=== Solution
 [source,bash]
 ....
 git checkout -f exercise-6

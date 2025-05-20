@@ -2,7 +2,7 @@
 
 Create unit tests to ensure that the `GreetingAutoConfiguration` works as expected.
 
-==== Task
+=== Task
 
 . A test class for the `GreetingAutoConfiguration` class must be created.
 
@@ -22,7 +22,7 @@ Create unit tests to ensure that the `GreetingAutoConfiguration` works as expect
 
 .. That user-defined beans take precedence over the auto-configured `GreetingService` beans — essentially testing that `@ConditionalOnMissingBean` works.
 
-==== Conclusion
+=== Conclusion
 
 What’s the benefit of writing a unit test for an auto-configuration?
 
@@ -35,7 +35,7 @@ Spring Boot's `ApplicationContextRunner` makes this easy.
 ====
 
 
-==== Detailed Steps
+=== Detailed Steps
 
 .Detailed Steps
 [%collapsible]
@@ -61,7 +61,7 @@ Spring Boot's `ApplicationContextRunner` makes this easy.
 .. Inside the lambda block of the `run` method, use AssertJ's `assertThat` on the context to call `hasSingleBean` with an `GreetingService.class` argument.
 ====
 
-==== Solution
+=== Solution
 
 [source,bash]
 ....

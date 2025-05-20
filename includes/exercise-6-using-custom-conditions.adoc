@@ -8,11 +8,11 @@ Or you could write a condition which triggers only on 1st of April.
 
 Oh, the possibilities!
 
-==== Learnings
+=== Learnings
 - **How to create your own conditions**
 - **How to use that custom condition**
 
-==== Task
+=== Task
 
 . Create a new annotation `@MyCustomCondition`. It must have a `@Target` of `TYPE` and `METHOD` and a `@Retention` of `RUNTIME` (you can also copy that from Spring Boot's `@ConditionalOnProperty`).
 
@@ -30,7 +30,7 @@ NOTE: You'll have to set `workshop.greeting.type` to something else than `logger
 
 . 🤔 Also take a look at the conditions evaluation report. Do you see your condition in there?
 
-==== Detailed Steps
+=== Detailed Steps
 
 .Detailed Steps
 [%collapsible]
@@ -58,7 +58,7 @@ NOTE: You'll have to set `workshop.greeting.type` to something else than `logger
 . You'll also need to add `workshop.greeting.type=none` to your `application.properties`, because otherwise the `LoggerGreetingService` or the `StdOutGreetingService` would be created
 ====
 
-==== Conclusion
+=== Conclusion
 Can you image why it is useful to create custom conditions?
 
 .Answer
@@ -71,7 +71,7 @@ There's no "magic" behind the built-in Spring Boot conditions — they are built
 NOTE: You can take a look at the `@Profile` annotation from Spring Framework: The logic is implemented in `ProfileCondition`, and it essentially returns `true` if the profile is activated and `false` if not.
 ====
 
-==== Solution
+=== Solution
 [source,bash]
 ....
 git checkout -f exercise-7
