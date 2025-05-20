@@ -5,13 +5,12 @@
 :stdout: library-stdout
 :slf4j: library-slf4j
 :starter: library-spring-boot-starter
-:author: Fabian Krüger
-:author: Moritz Halbritter
+:author: Moritz Halbritter & Fabian Krüger
 :docdate: 2025-04-21
 :doctype: article
 :toc:
 
-Workshop SpringIO 2025 - Moritz Halbritter & Fabian Krüger
+Workshop @ SpringIO 2025 - Moritz Halbritter & Fabian Krüger
 
 == Getting Started
 include::includes/getting-started.adoc[tag=main]
