@@ -1,0 +1,13 @@
+// tag::main[]
+
+We’d love your feedback on this workshop! If you enjoyed it or have ideas for improvement, please reach out or connect with us on social media or via the conference app. Thanks for helping us get better! ❤️ ️
+
+=== Connect With Us!
+* **Moritz Halbritter**
+** https://www.linkedin.com/in/moritz-halbritter-9301a1b1/[on Linkedin]
+
+* **Fabian Krüger**
+** https://www.linkedin.com/in/fabiankrueger/[on Linkedin]
+** https://x.com/hiiamfabian[on X]
+
+// end::main[]

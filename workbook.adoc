@@ -50,5 +50,10 @@ include::includes/exercise-7-testing-the-auto-configuration.adoc[tag=main]
 === Exercise 8: Adding properties metadata
 include::includes/exercise-8-adding-properties-metadata.adoc[tag=main]
 
+[[feedback]]
+== Feedback
+include::includes/feedback.adoc[tag=main]
+
+
 == Resources
 include::includes/resources.adoc[tag=main]
