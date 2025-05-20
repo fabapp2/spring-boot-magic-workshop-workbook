@@ -25,7 +25,7 @@ Use the Spring Boot configuration processor to generate metadata for your config
 
 ==== Conclusion
 
-What value is provided by that metadata file? Who could use it?
+Why is providing that netadata file beneficial? Who would use it?
 
 .Answer
 [%collapsible]
