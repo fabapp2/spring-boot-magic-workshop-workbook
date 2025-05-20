@@ -2,12 +2,12 @@
 
 Make the `StdOutGreetingService` from `{stdout}` available as an auto-configured Spring bean for applications that rely on `GreetingService`.
 
-==== Learnings
+=== Learnings
 - **How does Spring Boot find auto-configuration classes**
 - **How does Spring Boot provide auto-configured beans**
 - **How to allow auto-configured beans to be overwritten**
 
-==== Task
+=== Task
 . Create an auto-configuration class `com.workshop.magic.config.GreetingAutoConfiguration` in the `{auto-config}` module.
 
 . Add a Maven dependency to `org.springframework.boot:spring-boot-autoconfigure` which brings the `@AutoConfiguration` annotation.
@@ -37,7 +37,7 @@ This can be achieved by annotating the bean declaration with `@ConditionalOnMiss
 
 NOTE: Auto-configurations must be loaded only by being named in the imports file. Make sure that they are defined in a specific package space and that they are never the target of component scanning. Furthermore, auto-configuration classes should not enable component scanning to find additional components. Specific @Import annotations should be used instead.
 
-==== Detailed Steps
+=== Detailed Steps
 
 .Detailed Steps
 [%collapsible]
@@ -73,7 +73,7 @@ NOTE: Auto-configurations must be loaded only by being named in the imports file
 
 ====
 
-==== Conclusion
+=== Conclusion
 Think for a moment, when is this useful and where does Spring Boot use this concept?
 
 .Answer
@@ -85,7 +85,7 @@ This feature reduces the need for manual setup, allowing developers to focus on 
 For example, adding `spring-boot-starter-web` sets up a whole webserver without manual configuration.
 ====
 
-==== Solution
+=== Solution
 [source,bash]
 ....
 git checkout -f exercise-2

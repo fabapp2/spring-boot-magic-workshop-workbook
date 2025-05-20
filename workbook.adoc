@@ -8,6 +8,7 @@
 :author: Moritz Halbritter & Fabian Krüger
 :docdate: 2025-04-21
 :doctype: article
+:toclevels: 1
 :toc:
 
 Workshop @ Spring I/O 2025 - Moritz Halbritter & Fabian Krüger
@@ -18,36 +19,33 @@ include::includes/getting-started.adoc[tag=main]
 == Project Layout
 include::includes/project-layout.adoc[tag=main]
 
-== Exercises
-include::includes/exercises.adoc[tag=main]
-
-=== Prerequisite
+== Prerequisite
 include::includes/prerequisite.adoc[tag=main]
 
-=== Exercise 1: Auto Configured Bean
+== Exercise 1: Auto Configured Bean
 include::includes/exercise-1-auto-configured-bean.adoc[tag=main]
 
-=== Exercise 2: Custom Spring Boot Starter
+== Exercise 2: Custom Spring Boot Starter
 include::includes/exercise-2-custom-spring-boot-starter.adoc[tag=main]
 
-=== Exercise 3: Custom Starter Without Default GreetingService
+== Exercise 3: Custom Starter Without Default GreetingService
 include::includes/exercise-3-custom-starter-without-default-greeting-service.adoc[tag=main]
 
-=== Exercise 4: Conditions Evaluation Report
+== Exercise 4: Conditions Evaluation Report
 include::includes/exercise-4-conditions-evaluation-report.adoc[tag=main]
 
-=== Exercise 5: Property Configuration and @ConditionalOnProperty
+== Exercise 5: Property Configuration and @ConditionalOnProperty
 include::includes/exercise-5-property-configuration.adoc[tag=main]
 
-=== Exercise 6: Using Custom Conditions
+== Exercise 6: Using Custom Conditions
 include::includes/exercise-6-using-custom-conditions.adoc[tag=main]
 
 [[testing]]
-=== Exercise 7: Testing The Auto-Configuration
+== Exercise 7: Testing The Auto-Configuration
 include::includes/exercise-7-testing-the-auto-configuration.adoc[tag=main]
 
 [[properties-metadata]]
-=== Exercise 8: Adding properties metadata
+== Exercise 8: Adding properties metadata
 include::includes/exercise-8-adding-properties-metadata.adoc[tag=main]
 
 [[feedback]]
