@@ -119,7 +119,7 @@ workshop.greeting.text=Gude
 @ConditionalOnProperty(name = "workshop.greeting.type", havingValue = "stdout")
 ----
 
-. Remove the `@ConditionalOnMissingClass("com.workshop.magic.service.slf4j.LoggerGreetingService")` annotation from the `StdOutGreetingService` bean method
+. Remove the `@ConditionalOnMissingClass` annotation from the `StdOutGreetingService` bean method
 
 . Annotate the `LoggerGreetingService` bean method with:
 +
