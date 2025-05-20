@@ -4,7 +4,7 @@ Create unit tests to ensure that the `GreetingAutoConfiguration` works as expect
 
 === Task
 
-. A dependency on `org.springframework.boot:spring-boot-starter-test` with scope `test` has to be added in the `auto-config` module.
+. A Maven dependency on `org.springframework.boot:spring-boot-starter-test` with scope `test` has to be added in the `{auto-config}` module.
 
 . A test class for the `GreetingAutoConfiguration` class must be created.
 
@@ -27,7 +27,9 @@ Create unit tests to ensure that the `GreetingAutoConfiguration` works as expect
 .Detailed Steps
 [%collapsible]
 ====
-. Create a class named `GreetingAutoConfigurationTest` in `auto-config/src/test/java` in the package `com.workshop.magic.config`.
+. Add a Maven dependency to `org.springframework.boot:spring-boot-starter-test` with scope `test` to the `{auto-config}` module.
+
+. Create a class named `GreetingAutoConfigurationTest` in `{auto-config}/src/test/java` in the package `com.workshop.magic.config`.
 
 . Create a field of type `ApplicationContextRunner`, and use the fluent API to call `withConfiguration` with `AutoConfigurations.of(GreetingAutoConfiguration.class)`.
 
@@ -44,7 +46,7 @@ Create unit tests to ensure that the `GreetingAutoConfiguration` works as expect
 .. Additionally, it uses the `withSystemProperties` method to set `my.custom.condition` to `true`.
 .. Inside the lambda block of the `run` method, use AssertJ's `assertThat` on the context to call `hasSingleBean` with an `BeepGreetingService.class` argument.
 
-. Write a test case named `shouldBackOffIfGreetingServiceIsDefinedByUser` which uses the `withBean` method of the `ApplicationContextRunner` field to define a bean of type `GreetingService`.
+. Write a test case named `shouldBackOffIfGreetingServiceIsDefinedByUser` which uses the `withBean` method of the `ApplicationContextRunner` field to define a bean of type `GreetingService`. Create an inner static class or an anonymous class for the "user provided" `GreetingService`.
 .. Inside the lambda block of the `run` method, use AssertJ's `assertThat` on the context to call `hasSingleBean` with an `GreetingService.class` argument.
 ====
 
