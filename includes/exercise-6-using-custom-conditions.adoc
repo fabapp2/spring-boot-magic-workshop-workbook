@@ -37,6 +37,9 @@ NOTE: You'll have to set `workshop.greeting.type` to something else than `logger
 ====
 
 . Create a new annotation in the `{auto-config}` module, called `MyCustomCondition`
++
+    public @interface MyCustomCondition {
+    }
 
 . Annotate the annotation with `@Target({ElementType.TYPE, ElementType.METHOD})` and with `@Retention(RetentionPolicy.RUNTIME)`
 
